@@ -59,5 +59,5 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
   Du bekommst eine Zusammenfassung mit den Motiven der nächsten Woche.
 - **Einen Post stoppen:** die Datei in `queue/` löschen (auf GitHub: Datei öffnen → Papierkorb-Symbol) oder Claude Bescheid sagen.
 - **Fehler:** GitHub schickt dir automatisch eine E-Mail, wenn ein Lauf fehlschlägt.
-- Die erste Planung startet am **Montag, 19.10.2026**. Liegt die Einrichtung später, werden überfällige Posts
+- Die erste Planung startet am **Sonntag, 11.10.2026, 9:00 Uhr**, danach Mo/Mi/Fr 18:00. Liegt die Einrichtung später, werden überfällige Posts
   einzeln nachgeholt – einer pro Tag.
