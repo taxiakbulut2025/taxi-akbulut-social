@@ -1,13 +1,15 @@
 # Redaktionsregeln für den Social-Autopilot
 
 ## Rhythmus
-- 3 Posts pro Woche: Montag, Mittwoch, Freitag, jeweils 18:00 Uhr (Europe/Berlin).
-- Die Warteschlange (`queue/`) soll immer mindestens 2 Wochen (6 Posts) im Voraus gefüllt sein.
+- 2 Bild-Posts pro Woche: Dienstag und Donnerstag, jeweils 18:00 Uhr (Europe/Berlin), jeweils mit Story.
+- 1 Reel pro Woche: Samstag 11:00 Uhr.
+- Keine Werbe-Posts an Feiertagen mit Familienbezug: 24.–26.12., 31.12., 1.1., Ostersonntag/-montag. Diese Termine überspringen.
+- Die Warteschlange (`queue/`) soll immer mindestens 3 Wochen (6 Bild-Posts) im Voraus gefüllt sein.
 - Themen abwechseln: nie zwei Posts desselben Themas (Flughafen, Krankenfahrt, Vertrauen/Familie, Service/Online, Spezial) direkt hintereinander.
 - Kein Motiv wiederholen, das in `queue/` oder `published/` schon vorkommt (Feld `motiv`, Überschrift).
 
 ## Reels (1× pro Woche, Samstag 11:00)
-- Zusätzlich zu den 3 Bild-Posts ein Reel pro Woche, samstags 11:00, aus dem stärksten Motiv der Woche.
+- Zusätzlich zu den 2 Bild-Posts ein Reel pro Woche, samstags 11:00, aus dem stärksten Motiv der Woche.
 - Format 1080 × 1920, 9 Sekunden, 30 fps. Vorlage: `vorlagen/reel-gelandet.html` (CSS-Animationen mit Verzögerung, Elemente erscheinen nacheinander).
 - Sicherer Bereich: oben 200 px und unten 360 px frei lassen – dort liegen Instagram-Bedienelemente. „Online buchen | taxi-akbulut.de" als schwarze Pill IM sichtbaren Bereich, letzter Animationsschritt bei ca. 5,8 s.
 - Musik: nur selbst erzeugt mit `generator/music.py` (keine fremden Songs, keine Lizenzmusik). Pro Reel anderen `--seed` und ggf. `--bpm` (100–120) wählen; `--pops` auf die Zeitpunkte erscheinender Elemente legen, `--chime` auf den Abschluss.

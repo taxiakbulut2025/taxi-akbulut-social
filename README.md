@@ -1,6 +1,6 @@
 # Taxi Akbulut – Social-Autopilot
 
-Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook, 3× pro Woche (Mo/Mi/Fr 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
+Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook, 2× pro Woche (Di/Do 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
 Kostenlos: GitHub Actions veröffentlicht, Claude füllt jede Woche die Warteschlange mit neuen Bildern.
 
 ```
@@ -60,5 +60,5 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
   Du bekommst eine Zusammenfassung mit den Motiven der nächsten Woche.
 - **Einen Post stoppen:** die Datei in `queue/` löschen (auf GitHub: Datei öffnen → Papierkorb-Symbol) oder Claude Bescheid sagen.
 - **Fehler:** GitHub schickt dir automatisch eine E-Mail, wenn ein Lauf fehlschlägt.
-- Die erste Planung startet am **Sonntag, 11.10.2026, 9:00 Uhr**, danach Mo/Mi/Fr 18:00. Liegt die Einrichtung später, werden überfällige Posts
+- Die erste Planung startet am **Sonntag, 11.10.2026, 9:00 Uhr**, danach Di/Do 18:00 und Sa 11:00 (Reel). Liegt die Einrichtung später, werden überfällige Posts
   einzeln nachgeholt – einer pro Tag.
