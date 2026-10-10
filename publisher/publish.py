@@ -76,6 +76,60 @@ def publish_instagram_story(image_url):
     return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
 
 
+VERSION = API.rsplit("/", 1)[-1]
+
+
+def wait_container(cid, tries=100, pause=6):
+    for _ in range(tries):
+        s = graph("GET", cid, {"fields": "status_code,status"})
+        if s.get("status_code") == "FINISHED":
+            return
+        if s.get("status_code") == "ERROR":
+            raise RuntimeError(f"Container fehlerhaft: {s}")
+        time.sleep(pause)
+    raise RuntimeError("Container nach Wartezeit nicht fertig")
+
+
+def publish_instagram_reel(video_path, caption):
+    """Reel per Direkt-Upload (keine öffentliche Video-URL nötig)."""
+    c = graph("POST", f"{IG_USER_ID}/media", {
+        "media_type": "REELS", "upload_type": "resumable",
+        "caption": caption, "share_to_feed": "true"})
+    cid = c["id"]
+    with open(video_path, "rb") as f:
+        data = f.read()
+    req = urllib.request.Request(
+        f"https://rupload.facebook.com/ig-api-upload/{VERSION}/{cid}", data=data, method="POST",
+        headers={"Authorization": f"OAuth {TOKEN}", "offset": "0", "file_size": str(len(data))})
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            r.read()
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Reel-Upload: {e.code} {e.read().decode(errors='replace')}")
+    wait_container(cid)
+    return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
+
+
+def publish_facebook_video(video_path, caption):
+    boundary = "----akbulut" + str(int(time.time()))
+    with open(video_path, "rb") as f:
+        video = f.read()
+    parts = []
+    for k, v in (("access_token", TOKEN), ("description", caption)):
+        parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
+    parts.append((f'--{boundary}\r\nContent-Disposition: form-data; name="source"; filename="reel.mp4"\r\n'
+                  'Content-Type: video/mp4\r\n\r\n').encode() + video + b"\r\n")
+    parts.append(f"--{boundary}--\r\n".encode())
+    req = urllib.request.Request(
+        f"https://graph-video.facebook.com/{VERSION}/{FB_PAGE_ID}/videos", data=b"".join(parts), method="POST",
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            return json.loads(r.read()).get("id")
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Facebook-Video: {e.code} {e.read().decode(errors='replace')}")
+
+
 def publish_facebook(image_url, caption):
     p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption})
     return p.get("post_id") or p.get("id")
@@ -131,32 +185,43 @@ def main():
         due = dt.datetime.strptime(post["publish_at"], "%Y-%m-%d %H:%M").replace(tzinfo=TZ)
         if due > now:
             continue
-        image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"
+        is_reel = post.get("type") == "reel"
         caption = post["caption"][:2200]
-        print(f"Fällig: {path} → {image_url}")
+        print(f"Fällig: {path} ({'Reel' if is_reel else 'Bild'})")
         if DRY_RUN:
             print("DRY_RUN – nichts veröffentlicht.\n" + caption)
             return
         try:
-            result = {}
-            if post.get("instagram", True):
-                result["instagram_id"] = publish_instagram(image_url, caption)
-            if FB_PAGE_ID and post.get("facebook", True):
-                result["facebook_id"] = publish_facebook(image_url, caption)
-            if post.get("story") and post.get("story_image"):
-                story_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['story_image']}"
-                try:
-                    result["story_id"] = publish_instagram_story(story_url)
-                except Exception as e:  # noqa: BLE001 – Story-Fehler stoppt den Feed-Post nicht
-                    result["story_error"] = str(e)[:500]
-            post.update(result, published_at=now.isoformat(timespec="minutes"))
+            # Bereits erledigte Kanäle (z. B. nach einem Teilfehler) werden nicht doppelt gepostet.
+            if is_reel:
+                if post.get("instagram", True) and not post.get("instagram_id"):
+                    post["instagram_id"] = publish_instagram_reel(post["video"], caption)
+                    save_json(path, post)
+                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
+                    post["facebook_id"] = publish_facebook_video(post["video"], caption)
+                    save_json(path, post)
+            else:
+                image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"
+                if post.get("instagram", True) and not post.get("instagram_id"):
+                    post["instagram_id"] = publish_instagram(image_url, caption)
+                    save_json(path, post)
+                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
+                    post["facebook_id"] = publish_facebook(image_url, caption)
+                    save_json(path, post)
+                if post.get("story") and post.get("story_image") and not post.get("story_id"):
+                    story_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['story_image']}"
+                    try:
+                        post["story_id"] = publish_instagram_story(story_url)
+                    except Exception as e:  # noqa: BLE001 – Story-Fehler stoppt den Feed-Post nicht
+                        post["story_error"] = str(e)[:500]
+            post.update(published_at=now.isoformat(timespec="minutes"))
             post.pop("last_error", None)
             os.makedirs("published", exist_ok=True)
             save_json(path, post)
             shutil.move(path, os.path.join("published", os.path.basename(path)))
             state["last_published_date"] = today
             save_json(STATE_FILE, state)
-            print(f"Veröffentlicht: {result}")
+            print(f"Veröffentlicht: {path}")
         except Exception as e:  # noqa: BLE001
             post["attempts"] = post.get("attempts", 0) + 1
             post["last_error"] = str(e)[:1000]

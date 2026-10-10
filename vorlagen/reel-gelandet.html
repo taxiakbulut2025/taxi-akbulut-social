@@ -1,0 +1,43 @@
+<style>
+@keyframes up { from { opacity: 0; transform: translateY(60px) } to { opacity: 1; transform: none } }
+@keyframes pop { 0% { opacity: 0; transform: scale(.6) } 70% { opacity: 1; transform: scale(1.06) } 100% { opacity: 1; transform: scale(1) } }
+@keyframes slideL { from { opacity: 0; transform: translateX(-120px) } to { opacity: 1; transform: none } }
+@keyframes slideR { from { opacity: 0; transform: translateX(120px) } to { opacity: 1; transform: none } }
+@keyframes bar { from { transform: translateY(100%) } to { transform: none } }
+@keyframes plane { from { transform: translate(-260px, 120px) rotate(-12deg); opacity: 0 } 20% { opacity: 1 } to { transform: translate(1200px, -80px) rotate(-12deg); opacity: 1 } }
+@keyframes out { to { opacity: 0 } }
+@keyframes typing { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
+.a { opacity: 0; animation-fill-mode: forwards; animation-timing-function: cubic-bezier(.2,.8,.2,1) }
+</style>
+<div style="width: 1080px; height: 1920px; box-sizing: border-box; background: #F2C230; color: #121212; font-family: 'Archivo', sans-serif; position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 200px 88px 360px">
+  <div class="a" style="animation: up .6s .1s forwards; display: flex; justify-content: space-between; align-items: center">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="width: 72px; height: 44px; background: #121212; color: #F2C230; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; letter-spacing: 2px">TAXI</div>
+      <div style="font-weight: 900; font-size: 38px; letter-spacing: 1px">AKBULUT</div>
+    </div>
+    <div style="font-weight: 500; font-size: 28px; color: #2B2924">Tübingen · seit 1986</div>
+  </div>
+
+  <svg class="a" style="animation: plane 2.4s .2s forwards; position: absolute; top: 300px; left: 0; width: 140px; height: 140px" viewBox="0 0 24 24" fill="#121212" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 80px; padding-bottom: 40px">
+    <h1 class="a" style="animation: pop .7s 1.0s forwards; margin: 0; font-weight: 900; font-size: 172px; line-height: .9; letter-spacing: -6px; transform-origin: left center">Gelandet?</h1>
+    <div style="display: flex; flex-direction: column; gap: 22px">
+      <div class="a" style="animation: slideL .5s 2.0s forwards; background: #fff; border-radius: 32px 32px 32px 8px; padding: 30px 38px; font-weight: 700; font-size: 52px; align-self: flex-start">Koffer da. Bin bei Ausgang 2.</div>
+      <div style="position: relative; align-self: flex-end; min-height: 110px; display: flex; justify-content: flex-end">
+      <div class="a" style="animation: up .3s 2.7s forwards, out .15s 3.45s forwards; position: absolute; right: 0; top: 20px; display: flex; gap: 10px; padding: 18px 26px; background: #121212; border-radius: 28px">
+        <span style="width: 14px; height: 14px; border-radius: 50%; background: #F4EFE3; animation: typing .6s infinite"></span>
+        <span style="width: 14px; height: 14px; border-radius: 50%; background: #F4EFE3; animation: typing .6s .2s infinite"></span>
+        <span style="width: 14px; height: 14px; border-radius: 50%; background: #F4EFE3; animation: typing .6s .4s infinite"></span>
+      </div>
+      <div class="a" style="animation: slideR .5s 3.5s forwards; background: #121212; color: #F4EFE3; border-radius: 32px 32px 8px 32px; padding: 30px 38px; font-weight: 700; font-size: 52px">Wir fahren vor.</div>
+      </div>
+    </div>
+    <p class="a" style="animation: up .6s 4.4s forwards; margin: 0; font-weight: 500; font-size: 48px; line-height: 1.35">Kurz per WhatsApp melden, wir holen Sie am vereinbarten Punkt ab. Die teure Parkgebühr am Flughafen Stuttgart sparen Sie sich.</p>
+    <div class="a" style="animation: up .5s 5.2s forwards; font-weight: 500; font-size: 28px; color: #2B2924">Kostenloser Abholservice. Auf Wunsch gegen Aufpreis mit Namensschild in der Ankunftshalle.</div>
+    <div class="a" style="animation: up .5s 5.8s forwards; background: #121212; color: #F4EFE3; border-radius: 22px; padding: 40px 48px; display: flex; justify-content: space-between; align-items: center">
+      <div style="font-weight: 900; font-size: 48px">Online buchen</div>
+      <div style="font-weight: 700; font-size: 48px">taxi-akbulut.de</div>
+    </div>
+  </div>
+</div>
