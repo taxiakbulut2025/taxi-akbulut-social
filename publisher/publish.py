@@ -81,10 +81,23 @@ def save_json(path, data):
         f.write("\n")
 
 
+def check_access():
+    """Testlauf: prüft Secrets und Berechtigungen, ohne etwas zu veröffentlichen."""
+    ig = graph("GET", IG_USER_ID, {"fields": "username"})
+    print(f"Instagram erreichbar: @{ig.get('username')}")
+    limit = graph("GET", f"{IG_USER_ID}/content_publishing_limit", {})
+    print(f"Posting-Berechtigung OK, Kontingent: {limit.get('data')}")
+    if FB_PAGE_ID:
+        page = graph("GET", FB_PAGE_ID, {"fields": "name"})
+        print(f"Facebook-Seite erreichbar: {page.get('name')}")
+
+
 def main():
-    if not DRY_RUN and not (TOKEN and IG_USER_ID):
+    if not (TOKEN and IG_USER_ID):
         print("META_ACCESS_TOKEN oder IG_USER_ID fehlt (GitHub Secrets).")
         sys.exit(1)
+    if DRY_RUN:
+        check_access()
     now = dt.datetime.now(TZ)
     today = now.date().isoformat()
     state = load_state()
