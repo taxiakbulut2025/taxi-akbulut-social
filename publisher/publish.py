@@ -83,13 +83,20 @@ def save_json(path, data):
 
 def check_access():
     """Testlauf: prüft Secrets und Berechtigungen, ohne etwas zu veröffentlichen."""
-    ig = graph("GET", IG_USER_ID, {"fields": "username"})
-    print(f"Instagram erreichbar: @{ig.get('username')}")
-    limit = graph("GET", f"{IG_USER_ID}/content_publishing_limit", {})
-    print(f"Posting-Berechtigung OK, Kontingent: {limit.get('data')}")
-    if FB_PAGE_ID:
-        page = graph("GET", FB_PAGE_ID, {"fields": "name"})
-        print(f"Facebook-Seite erreichbar: {page.get('name')}")
+    lines = [f"Testlauf {dt.datetime.now(TZ).isoformat(timespec='minutes')}"]
+    try:
+        ig = graph("GET", IG_USER_ID, {"fields": "username"})
+        lines.append(f"OK Instagram erreichbar: @{ig.get('username')}")
+        limit = graph("GET", f"{IG_USER_ID}/content_publishing_limit", {})
+        lines.append(f"OK Posting-Berechtigung, Kontingent: {limit.get('data')}")
+        if FB_PAGE_ID:
+            page = graph("GET", FB_PAGE_ID, {"fields": "name"})
+            lines.append(f"OK Facebook-Seite erreichbar: {page.get('name')}")
+    except Exception as e:  # noqa: BLE001
+        lines.append(f"FEHLER: {str(e)[:500]}")
+    print("\n".join(lines))
+    with open("testlauf.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 def main():

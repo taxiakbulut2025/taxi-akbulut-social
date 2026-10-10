@@ -37,5 +37,5 @@ jobs:
         run: |
           git config user.name "social-autopilot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A queue published failed state.json 2>/dev/null || true
+          git add -A queue published failed state.json testlauf.txt 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Autopilot: Status aktualisiert" && git push)
