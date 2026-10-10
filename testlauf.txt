@@ -1,4 +1,4 @@
-Testlauf 2026-10-10T12:48+02:00
+Testlauf 2026-10-10T13:13+02:00
 OK Instagram erreichbar: @taxiakbulut
 OK Posting-Berechtigung, Kontingent: [{'quota_usage': 0}]
 OK Facebook-Seite erreichbar: Taxi Akbulut Tübingen
