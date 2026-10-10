@@ -15,6 +15,7 @@
 - Neue Motive als HTML-Fragment in `motive/<slug>.html` (Muster: Dateien in `vorlagen/`), dann rendern:
   `cd generator && npm install && cd .. && node generator/render.js motive/<slug>.html images/<datum>-<slug>.jpg`
   Der Renderer bricht ab, wenn Text überläuft – dann kürzen.
+- Zu jedem Bild die Story-Version (9:16) erzeugen: `python3 generator/story.py images/<datum>-<slug>.jpg`
 
 ## Text (Bildunterschrift)
 - Stimme: Sie-Form, Absender „wir", Hochdeutsch, ruhig und konkret. Keine Floskeln („zuverlässiger Partner", „maßgeschneidert", „egal ob").
@@ -31,6 +32,8 @@
   "caption": "…",
   "instagram": true,
   "facebook": true,
+  "story": true,
+  "story_image": "stories/2026-12-14-<slug>.jpg",
   "motiv": "<slug>"
 }
 ```

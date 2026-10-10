@@ -63,6 +63,19 @@ def publish_instagram(image_url, caption):
     return p["id"]
 
 
+def publish_instagram_story(image_url):
+    c = graph("POST", f"{IG_USER_ID}/media", {"image_url": image_url, "media_type": "STORIES"})
+    cid = c["id"]
+    for _ in range(20):
+        s = graph("GET", cid, {"fields": "status_code"})
+        if s.get("status_code") == "FINISHED":
+            break
+        if s.get("status_code") == "ERROR":
+            raise RuntimeError(f"Story-Container fehlerhaft: {s}")
+        time.sleep(6)
+    return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
+
+
 def publish_facebook(image_url, caption):
     p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption})
     return p.get("post_id") or p.get("id")
@@ -130,6 +143,12 @@ def main():
                 result["instagram_id"] = publish_instagram(image_url, caption)
             if FB_PAGE_ID and post.get("facebook", True):
                 result["facebook_id"] = publish_facebook(image_url, caption)
+            if post.get("story") and post.get("story_image"):
+                story_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['story_image']}"
+                try:
+                    result["story_id"] = publish_instagram_story(story_url)
+                except Exception as e:  # noqa: BLE001 – Story-Fehler stoppt den Feed-Post nicht
+                    result["story_error"] = str(e)[:500]
             post.update(result, published_at=now.isoformat(timespec="minutes"))
             post.pop("last_error", None)
             os.makedirs("published", exist_ok=True)

@@ -1,10 +1,11 @@
 # Taxi Akbulut – Social-Autopilot
 
-Postet automatisch Werbebilder auf Instagram und Facebook, 3× pro Woche (Mo/Mi/Fr 18:00).
+Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook, 3× pro Woche (Mo/Mi/Fr 18:00).
 Kostenlos: GitHub Actions veröffentlicht, Claude füllt jede Woche die Warteschlange mit neuen Bildern.
 
 ```
 queue/        geplante Posts (JSON: Datum, Bild, Text)
+stories/      Story-Versionen der Bilder (9:16)
 images/       Bilder (JPEG, öffentlich über GitHub abrufbar – Instagram verlangt das)
 published/    veröffentlichte Posts mit Instagram-/Facebook-ID
 failed/       Posts, die 3× fehlgeschlagen sind
