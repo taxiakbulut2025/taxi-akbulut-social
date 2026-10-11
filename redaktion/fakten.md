@@ -35,7 +35,8 @@ Stand: Oktober 2026.
 
 ## Weitere Leistungen
 - Ferntaxi / Langstrecke deutschlandweit.
-- Medizinischer Kurierdienst mit ThermoSecure-Kühlboxen (für Praxen, Labore, Kliniken).
+- Medizinischer Kurierdienst mit ThermoSecure-Kühlboxen (für Praxen, Labore, Kliniken): Blutproben/Laborproben und Medikamente, gekühlt; regelmäßige Touren nach Absprache. NICHT behaupten: GDP-Zertifizierung, Temperaturbereiche, 24/7-Erreichbarkeit, Zustellzeiten.
+- Event-Shuttle (Hochzeit, Firmen-/Weihnachtsfeier, Messe, Abiball, Geburtstag): auf Vorbestellung, Preis wird vorab vereinbart; V-Klasse bis 7 Gäste pro Fahrt, größere Gruppen in mehreren Fahrten. NICHT behaupten: Busse, Anzahl Fahrzeuge, Festpreise für Events.
 - Mietwagen („Taxi ohne Taxischild"), nur auf Vorbestellung, Preis wird vorab frei vereinbart – auch innerhalb Tübingens.
 - Kindersitze auf Wunsch gegen Aufpreis.
 - Kartenzahlung auch auf der Kurzstrecke.
