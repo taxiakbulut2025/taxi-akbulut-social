@@ -8,6 +8,6 @@
   "story_image": "stories/2026-10-11-neukunden-15-prozent.jpg",
   "story": true,
   "instagram_id": "17906506635581655",
-  "attempts": 1,
+  "attempts": 0,
   "last_error": "Graph API 265217663586904/photos: 403 {\"error\":{\"message\":\"(#200) Subject does not have permission to post photos on this page\",\"type\":\"OAuthException\",\"code\":200,\"fbtrace_id\":\"AWGHSVSxzRzLUx06k_9_B98\"}}"
 }

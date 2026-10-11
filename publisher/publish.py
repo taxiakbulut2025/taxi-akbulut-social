@@ -34,8 +34,8 @@ STATE_FILE = "state.json"
 MAX_ATTEMPTS = 3
 
 
-def graph(method, path, params):
-    params = dict(params, access_token=TOKEN)
+def graph(method, path, params, token=None):
+    params = dict(params, access_token=token or TOKEN)
     data = urllib.parse.urlencode(params).encode()
     url = f"{API}/{path}"
     if method == "GET":
@@ -110,12 +110,23 @@ def publish_instagram_reel(video_path, caption):
     return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
 
 
+_PAGE_TOKEN = None
+
+
+def page_token():
+    """Facebook-Seiten verlangen einen Seiten-Zugangsschlüssel; er wird aus dem Systemnutzer-Token abgeleitet."""
+    global _PAGE_TOKEN
+    if _PAGE_TOKEN is None:
+        _PAGE_TOKEN = graph("GET", FB_PAGE_ID, {"fields": "access_token"}).get("access_token") or TOKEN
+    return _PAGE_TOKEN
+
+
 def publish_facebook_video(video_path, caption):
     boundary = "----akbulut" + str(int(time.time()))
     with open(video_path, "rb") as f:
         video = f.read()
     parts = []
-    for k, v in (("access_token", TOKEN), ("description", caption)):
+    for k, v in (("access_token", page_token()), ("description", caption)):
         parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
     parts.append((f'--{boundary}\r\nContent-Disposition: form-data; name="source"; filename="reel.mp4"\r\n'
                   'Content-Type: video/mp4\r\n\r\n').encode() + video + b"\r\n")
@@ -131,7 +142,7 @@ def publish_facebook_video(video_path, caption):
 
 
 def publish_facebook(image_url, caption):
-    p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption})
+    p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption}, token=page_token())
     return p.get("post_id") or p.get("id")
 
 
@@ -205,15 +216,18 @@ def main():
                 if post.get("instagram", True) and not post.get("instagram_id"):
                     post["instagram_id"] = publish_instagram(image_url, caption)
                     save_json(path, post)
-                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
-                    post["facebook_id"] = publish_facebook(image_url, caption)
-                    save_json(path, post)
-                if post.get("story") and post.get("story_image") and not post.get("story_id"):
+                # Story vor Facebook, damit ein Facebook-Fehler die Story nicht blockiert.
+                if post.get("story") and post.get("story_image") and not post.get("story_id") \
+                        and not post.get("story_error"):
                     story_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['story_image']}"
                     try:
                         post["story_id"] = publish_instagram_story(story_url)
                     except Exception as e:  # noqa: BLE001 – Story-Fehler stoppt den Feed-Post nicht
                         post["story_error"] = str(e)[:500]
+                    save_json(path, post)
+                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
+                    post["facebook_id"] = publish_facebook(image_url, caption)
+                    save_json(path, post)
             post.update(published_at=now.isoformat(timespec="minutes"))
             post.pop("last_error", None)
             os.makedirs("published", exist_ok=True)
