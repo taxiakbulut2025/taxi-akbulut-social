@@ -44,6 +44,10 @@ Stand: Oktober 2026.
 - Fahrten (auch Krankenfahrten, Ferntaxi) online buchen und bezahlen; im Kundenkonto selbst ändern und stornieren.
 - Neukunden: 15 % Nachlass auf die erste online gebuchte Fahrt nach Registrierung, automatisch im Kundenkonto, kein Code; gilt nicht im Tarifgebiet Tübingen; unbefristet.
 
+## Website-Funktionen (Okt 2026)
+- Ankunftsrechner: schlägt die passende Abfahrtszeit ab der Kundenadresse zum Flughafen vor.
+- Pünktlichkeitsgarantie: bei Verspätung gibt es eine Gutschrift (Bedingungen nur auf taxi-akbulut.de verweisen, keine Beträge nennen).
+
 ## GESPERRT – nicht bewerben, bis Yasin es freigibt
 - Cashback-Programm (Teilnehmerkreis noch offen).
 - Alles zu Preisen innerhalb des Taxi-Tarifgebiets, Rabatten oder Aktionen, die oben nicht stehen.
