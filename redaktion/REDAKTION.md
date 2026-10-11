@@ -38,8 +38,27 @@
 - Stimme: Sie-Form, Absender „wir", Hochdeutsch, ruhig und konkret. Keine Floskeln („zuverlässiger Partner", „maßgeschneidert", „egal ob").
 - 40–110 Wörter, mindestens ein konkreter Fakt aus `fakten.md`. Nichts erfinden.
 - Preise immer mit „Endpreis inkl. MwSt." und Stand. Bewertungen immer korrekt zugeordnet (siehe fakten.md).
-- Schluss immer: `Online buchen: taxi-akbulut.de (Link im Profil)` + Leerzeile + `#Tübingen #TaxiTübingen #TaxiAkbulut` + 1–2 Themen-Hashtags.
 - Höchstens ein Emoji, besser keins.
+
+### SEO-Aufbau (Instagram-Suche liest Bildtext und Alt-Text)
+1. Aufhänger + 1–2 Absätze Inhalt (Suchbegriff des Themas möglichst im ersten Satz).
+2. Fester SEO-Satz der Kategorie:
+   - taxi-tuebingen: „Taxi Akbulut ist Ihr Taxi in Tübingen, Familienbetrieb seit 1986."
+   - krankenfahrten: „Krankenfahrten in Tübingen und Umgebung: Wir rechnen direkt mit Krankenkasse, Berufsgenossenschaft und Unfallkasse ab."
+   - flughafen (auch Flughafen-Reels): „Flughafentransfer und Airport-Shuttle von Tübingen zum Flughafen Stuttgart (STR) und zurück, zum Festpreis."
+   - ferntaxi: „Ferntaxi ab Tübingen: Langstreckenfahrten zu jedem Ziel in Deutschland."
+   - event-shuttle: „Event-Shuttle in Tübingen und Umgebung für Hochzeit, Firmenfeier, Weihnachtsfeier und Messe."
+   - medizinkurier: „Medizinischer Kurierdienst in Tübingen: Blutproben- und Medikamententransport für Praxen, Labore und Kliniken."
+3. `Online buchen: taxi-akbulut.de (Link im Profil)`
+4. GENAU 5 Hashtags (Instagram-Limit seit Dez. 2025): 3 Kern-Hashtags der Kategorie + 1 motivbezogener + `#TaxiAkbulut`.
+   - taxi-tuebingen: #TaxiTübingen #Tübingen #Taxi + (z. B. #Kartenzahlung, #Kindersitz, #Familienbetrieb; sonst #TübingenCity)
+   - krankenfahrten: #KrankenfahrtTübingen #Krankenfahrten #Krankenfahrt + (z. B. #Dialyse, #Reha, #Rollstuhl, #Arbeitsunfall; sonst #TaxiTübingen)
+   - flughafen: #FlughafentransferStuttgart #AirportShuttleStuttgart #FlughafenStuttgart + (z. B. #Familienurlaub, #Geschäftsreise, #Frühflug; sonst #FlughafenshuttleStuttgart)
+   - ferntaxi: #Ferntaxi #FerntaxiTübingen #Langstrecke + (z. B. #Zugausfall, #Gruppenreise; sonst #TaxiTübingen)
+   - event-shuttle: #EventShuttle #ShuttleTübingen #Shuttleservice + (z. B. #Hochzeit, #Weihnachtsfeier, #MesseStuttgart; sonst #TaxiTübingen)
+   - medizinkurier: #Medizinkurier #MedizinkurierTübingen #Laborkurier + (z. B. #Blutproben, #Medikamententransport; sonst #Kurierdienst)
+5. Feld `"alt_text"` (nur Bild-Posts): sachliche Bildbeschreibung mit Überschrift in Anführungszeichen, max. 1000 Zeichen.
+6. Standort-Markierung setzt der Publisher automatisch (Facebook-Seite Taxi Akbulut Tübingen mit Adresse).
 
 ## Datei-Format eines Posts (`queue/<datum>-<slug>.json`)
 ```json
@@ -48,6 +67,7 @@
   "category": "krankenfahrten",
   "image": "images/2026-12-14-<slug>.jpg",
   "caption": "…",
+  "alt_text": "Werbebild …: „Überschrift“ …",
   "instagram": true,
   "facebook": true,
   "story": true,

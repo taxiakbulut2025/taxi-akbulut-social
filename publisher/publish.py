@@ -49,9 +49,25 @@ def graph(method, path, params, token=None):
         raise RuntimeError(f"Graph API {path}: {e.code} {e.read().decode(errors='replace')}")
 
 
-def publish_instagram(image_url, caption):
-    c = graph("POST", f"{IG_USER_ID}/media", {"image_url": image_url, "caption": caption})
-    cid = c["id"]
+LOCATION_ID = os.environ.get("LOCATION_ID") or FB_PAGE_ID
+
+
+def create_container(params, post):
+    """Legt einen Container an – mit Standort-Markierung, falls möglich.
+    Lehnt Instagram den Standort ab, wird ohne Standort weitergemacht und der Grund gespeichert."""
+    if LOCATION_ID and not post.get("location_error"):
+        try:
+            return graph("POST", f"{IG_USER_ID}/media", dict(params, location_id=LOCATION_ID))["id"]
+        except RuntimeError as e:
+            post["location_error"] = str(e)[:300]
+    return graph("POST", f"{IG_USER_ID}/media", params)["id"]
+
+
+def publish_instagram(image_url, caption, post):
+    params = {"image_url": image_url, "caption": caption}
+    if post.get("alt_text"):
+        params["alt_text"] = post["alt_text"][:1000]
+    cid = create_container(params, post)
     for _ in range(20):
         s = graph("GET", cid, {"fields": "status_code"})
         if s.get("status_code") == "FINISHED":
@@ -90,12 +106,11 @@ def wait_container(cid, tries=100, pause=6):
     raise RuntimeError("Container nach Wartezeit nicht fertig")
 
 
-def publish_instagram_reel(video_path, caption):
+def publish_instagram_reel(video_path, caption, post):
     """Reel per Direkt-Upload (keine öffentliche Video-URL nötig)."""
-    c = graph("POST", f"{IG_USER_ID}/media", {
+    cid = create_container({
         "media_type": "REELS", "upload_type": "resumable",
-        "caption": caption, "share_to_feed": "true"})
-    cid = c["id"]
+        "caption": caption, "share_to_feed": "true"}, post)
     with open(video_path, "rb") as f:
         data = f.read()
     req = urllib.request.Request(
@@ -170,6 +185,15 @@ def check_access():
         if FB_PAGE_ID:
             page = graph("GET", FB_PAGE_ID, {"fields": "name"})
             lines.append(f"OK Facebook-Seite erreichbar: {page.get('name')}")
+        if LOCATION_ID:
+            try:
+                loc = graph("GET", LOCATION_ID, {"fields": "name,location"})
+                if loc.get("location"):
+                    lines.append(f"OK Standort-Markierung möglich: {loc.get('name')} {loc['location']}")
+                else:
+                    lines.append(f"HINWEIS Seite {loc.get('name')} hat keine Adresse – Posts erscheinen ohne Standort")
+            except Exception as e:  # noqa: BLE001
+                lines.append(f"HINWEIS Standort nicht prüfbar: {str(e)[:200]}")
     except Exception as e:  # noqa: BLE001
         lines.append(f"FEHLER: {str(e)[:500]}")
     print("\n".join(lines))
@@ -206,7 +230,7 @@ def main():
             # Bereits erledigte Kanäle (z. B. nach einem Teilfehler) werden nicht doppelt gepostet.
             if is_reel:
                 if post.get("instagram", True) and not post.get("instagram_id"):
-                    post["instagram_id"] = publish_instagram_reel(post["video"], caption)
+                    post["instagram_id"] = publish_instagram_reel(post["video"], caption, post)
                     save_json(path, post)
                 if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
                     post["facebook_id"] = publish_facebook_video(post["video"], caption)
@@ -214,7 +238,7 @@ def main():
             else:
                 image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"
                 if post.get("instagram", True) and not post.get("instagram_id"):
-                    post["instagram_id"] = publish_instagram(image_url, caption)
+                    post["instagram_id"] = publish_instagram(image_url, caption, post)
                     save_json(path, post)
                 # Story vor Facebook, damit ein Facebook-Fehler die Story nicht blockiert.
                 if post.get("story") and post.get("story_image") and not post.get("story_id") \
