@@ -9,5 +9,7 @@
   "story": true,
   "instagram_id": "17906506635581655",
   "attempts": 0,
-  "last_error": "Graph API 265217663586904/photos: 403 {\"error\":{\"message\":\"(#200) Subject does not have permission to post photos on this page\",\"type\":\"OAuthException\",\"code\":200,\"fbtrace_id\":\"AWGHSVSxzRzLUx06k_9_B98\"}}"
+  "story_id": "18109875347351623",
+  "facebook_id": "265217663586904_1731057292206360",
+  "published_at": "2026-10-11T11:24+02:00"
 }
