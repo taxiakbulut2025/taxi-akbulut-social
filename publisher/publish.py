@@ -201,7 +201,26 @@ def check_access():
         f.write("\n".join(lines) + "\n")
 
 
+def fetch_remote_videos():
+    """Lädt Reel-Videos, die nur als URL vorliegen (Feld video_url), ins Repository (Ordner reels/)."""
+    for path in sorted(glob.glob("queue/*.json")):
+        with open(path, encoding="utf-8") as f:
+            post = json.load(f)
+        url, target = post.get("video_url"), post.get("video")
+        if not (url and target) or os.path.exists(target):
+            continue
+        try:
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            req = urllib.request.Request(url, headers={"User-Agent": "taxi-akbulut-social"})
+            with urllib.request.urlopen(req, timeout=300) as r, open(target, "wb") as out:
+                shutil.copyfileobj(r, out)
+            print(f"Video geladen: {target} ({os.path.getsize(target)} Bytes)")
+        except Exception as e:  # noqa: BLE001
+            print(f"Video konnte nicht geladen werden ({target}): {e}")
+
+
 def main():
+    fetch_remote_videos()
     if not (TOKEN and IG_USER_ID):
         print("META_ACCESS_TOKEN oder IG_USER_ID fehlt (GitHub Secrets).")
         sys.exit(1)
