@@ -8,6 +8,7 @@
   - Donnerstag: Ferntaxi (`ferntaxi`)
   - Freitag: im Wechsel Event-Shuttle (`event-shuttle`) und Medizinkurier – Blut-/Medikamententransport (`medizinkurier`)
 - 1 Reel pro Woche: Samstag 11:00 Uhr (`category: reel`).
+- Sonntag 18:00: Chauffeurservice (`category: chauffeurservice`) – Zielgruppe Geschäftsleute, eigener Markenstil „AKBULUT. Fahrservice“ (siehe unten).
 - Keine Werbe-Posts an Feiertagen mit Familienbezug: 24.–26.12., 31.12., 1.1., Ostersonntag/-montag. Diese Termine überspringen (der Themen-Tag fällt dann aus).
 - Puffer: Für JEDE Kategorie muss die Warteschlange mindestens 3 Termine im Voraus gefüllt sein. Fehlt etwas, zuerst die Kategorie mit dem kleinsten Vorrat auffüllen (neue Motive im festgelegten Stil).
 - Innerhalb einer Kategorie ähnliche Motive (z. B. zwei Rollstuhl-Motive, zwei Festpreis-Motive) mit mindestens 3 Wochen Abstand.
@@ -48,6 +49,7 @@
    - flughafen (auch Flughafen-Reels): „Flughafentransfer und Airport-Shuttle von Tübingen zum Flughafen Stuttgart (STR) und zurück, zum Festpreis."
    - ferntaxi: „Ferntaxi ab Tübingen: Langstreckenfahrten zu jedem Ziel in Deutschland."
    - event-shuttle: „Event-Shuttle in Tübingen und Umgebung für Hochzeit, Firmenfeier, Weihnachtsfeier und Messe."
+   - chauffeurservice: „Chauffeurservice in Tübingen, Reutlingen und Stuttgart: Mercedes E- und V-Klasse mit Fahrer, auf Vorbestellung.“
    - medizinkurier: „Medizinischer Kurierdienst in Tübingen: Blutproben- und Medikamententransport für Praxen, Labore und Kliniken."
 3. `Online buchen: taxi-akbulut.de (Link im Profil)`
 4. GENAU 5 Hashtags (Instagram-Limit seit Dez. 2025): 3 Kern-Hashtags der Kategorie + 1 motivbezogener + `#TaxiAkbulut`.
@@ -56,6 +58,7 @@
    - flughafen: #FlughafentransferStuttgart #AirportShuttleStuttgart #FlughafenStuttgart + (z. B. #Familienurlaub, #Geschäftsreise, #Frühflug; sonst #FlughafenshuttleStuttgart)
    - ferntaxi: #Ferntaxi #FerntaxiTübingen #Langstrecke + (z. B. #Zugausfall, #Gruppenreise; sonst #TaxiTübingen)
    - event-shuttle: #EventShuttle #ShuttleTübingen #Shuttleservice + (z. B. #Hochzeit, #Weihnachtsfeier, #MesseStuttgart; sonst #TaxiTübingen)
+   - chauffeurservice: #Chauffeurservice #ChauffeurserviceStuttgart #Limousinenservice + (z. B. #Geschäftsreise, #Pünktlichkeit, #VKlasse) + **#AkbulutFahrservice** statt #TaxiAkbulut
    - medizinkurier: #Medizinkurier #MedizinkurierTübingen #Laborkurier + (z. B. #Blutproben, #Medikamententransport; sonst #Kurierdienst)
 5. Feld `"alt_text"` (nur Bild-Posts): sachliche Bildbeschreibung mit Überschrift in Anführungszeichen, max. 1000 Zeichen.
 6. Standort-Markierung setzt der Publisher automatisch (Facebook-Seite Taxi Akbulut Tübingen mit Adresse).
@@ -75,3 +78,10 @@
   "motiv": "<slug>"
 }
 ```
+
+## Markenstil Chauffeurservice („AKBULUT. Fahrservice“)
+- Nur für `category: chauffeurservice`. Vorlage: `vorlagen/chauffeur_build.py` (Funktionen frame/label/h1/body/items/cards).
+- Hintergrund dunkel (radialer Verlauf #191929 → #030305), Gold #C9A227, Weiß, Grau #9CA3AF; Schrift Roboto 400/500/700/900; goldene Eckwinkel oben links/unten rechts.
+- Kopf: Goldquadrat „A.“ + „AKBULUT.“ (Punkt gold), rechts „CHAUFFEURSERVICE“ gesperrt in Gold. Fuß: „TÜBINGEN · REUTLINGEN · STUTTGART“ + „ONLINE BUCHEN“ + taxi-akbulut.de.
+- Überschrift endet mit goldenem Punkt. Kein Wort „Taxi“ im Bild. Gelb (#F2C230) hier nicht verwenden.
+- Fotos nur echte eigene Fahrzeugfotos, abgedunkelt; keine Kundenmarken im Text.

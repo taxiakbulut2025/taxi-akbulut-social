@@ -41,6 +41,13 @@ Stand: Oktober 2026.
 - Kindersitze auf Wunsch gegen Aufpreis.
 - Kartenzahlung auch auf der Kurzstrecke.
 
+## Chauffeurservice (Marke „AKBULUT. Fahrservice“, seit Okt. 2026)
+- Premium-Chauffeurservice für Geschäftsleute; Schwerpunkte laut Inhaber: Pünktlichkeit, Zuverlässigkeit, gepflegtes Auftreten, hochwertige Fahrzeuge.
+- Region im Markenauftritt: Tübingen · Reutlingen · Stuttgart.
+- Fahrzeuge: Mercedes E-Klasse (Limousine, T-Modell) und Mercedes V-Klasse (bis 7 Fahrgäste).
+- VIP-/Event-Shuttles mit V-Klassen durchgeführt, u. a. gemeinsam mit Fahrservice Legion und Fahrservice Hain (Reutlingen). Auftraggeber NICHT namentlich nennen.
+- NICHT behaupten (unbestätigt): Diskretions-/Verschwiegenheitszusagen, WLAN/Getränke an Bord, feste Fahrerzuordnung, Abrechnung auf Rechnung für Firmen, S-Klasse.
+
 ## Website / Online-Buchung
 - Fahrten (auch Krankenfahrten, Ferntaxi) online buchen und bezahlen; im Kundenkonto selbst ändern und stornieren.
 - Neukunden: 15 % Nachlass auf die erste online gebuchte Fahrt nach Registrierung, automatisch im Kundenkonto, kein Code; gilt nicht im Tarifgebiet Tübingen; unbefristet.
