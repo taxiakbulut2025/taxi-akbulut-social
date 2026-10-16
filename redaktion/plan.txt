@@ -19,6 +19,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-10-28 18:00 Mi | flughafen       | flugverspaetung
 2026-10-29 18:00 Do | ferntaxi        | t02-zug-faellt-aus
 2026-10-30 18:00 Fr | event-shuttle   | e05-messe-stuttgart
+2026-10-31 11:00 Sa | reel            | vip-shuttle-chauffeur
 2026-11-01 18:00 So | chauffeurservice | c03-erster-eindruck
 2026-11-02 18:00 Mo | taxi-tuebingen  | online-aendern
 2026-11-03 18:00 Di | krankenfahrten  | k02-rollstuhl-chat
