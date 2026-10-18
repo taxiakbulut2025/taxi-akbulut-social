@@ -9,6 +9,10 @@ on:
         description: "Nur testen, nichts veröffentlichen"
         type: boolean
         default: true
+      yt_test:
+        description: "YouTube-Testupload (privat), sonst nichts"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,6 +37,7 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.yt_test || 'false' }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
         run: python publisher/publish.py
       - name: Status speichern

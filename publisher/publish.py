@@ -30,6 +30,7 @@ FB_PAGE_ID = os.environ.get("FB_PAGE_ID", "")
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
 BRANCH = os.environ.get("GITHUB_REF_NAME", "main")
 DRY_RUN = os.environ.get("DRY_RUN", "false").lower() == "true"
+YT_TEST = os.environ.get("YT_TEST", "false").lower() == "true"
 STATE_FILE = "state.json"
 MAX_ATTEMPTS = 3
 
@@ -201,7 +202,7 @@ def yt_metadata(post, caption):
         + "\n\nTaxi Akbulut – Familienbetrieb seit 1986\nSchwärzlocher Str. 37, 72070 Tübingen")
     return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags[:15],
                         "categoryId": "2", "defaultLanguage": "de", "defaultAudioLanguage": "de"},
-            "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": False,
+            "status": {"privacyStatus": post.get("yt_privacy", "public"), "selfDeclaredMadeForKids": False,
                        "containsSyntheticMedia": bool(post.get("ki", False))}}
 
 
@@ -265,6 +266,23 @@ def check_access():
         f.write("\n".join(lines) + "\n")
 
 
+def youtube_test_upload():
+    """Test-Upload: lädt das bereits gepostete Reel vom 17.10. PRIVAT auf YouTube hoch."""
+    src = "published/2026-10-17-reel-gelandet.json"
+    lines = [f"YouTube-Testupload {dt.datetime.now(TZ).isoformat(timespec='minutes')}"]
+    try:
+        with open(src, encoding="utf-8") as f:
+            post = json.load(f)
+        post["yt_privacy"] = "private"
+        vid = publish_youtube(post["video"], post, post["caption"])
+        lines.append(f"OK Video privat hochgeladen: https://youtu.be/{vid}")
+    except Exception as e:  # noqa: BLE001
+        lines.append(f"FEHLER YouTube-Testupload: {str(e)[:600]}")
+    print("\n".join(lines))
+    with open("testlauf.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
 def fetch_remote_videos():
     """Lädt Reel-Videos, die nur als URL vorliegen (Feld video_url), ins Repository (Ordner reels/)."""
     for path in sorted(glob.glob("queue/*.json")):
@@ -288,6 +306,9 @@ def main():
     if not (TOKEN and IG_USER_ID):
         print("META_ACCESS_TOKEN oder IG_USER_ID fehlt (GitHub Secrets).")
         sys.exit(1)
+    if YT_TEST:
+        youtube_test_upload()
+        return
     if DRY_RUN:
         check_access()
     now = dt.datetime.now(TZ)
