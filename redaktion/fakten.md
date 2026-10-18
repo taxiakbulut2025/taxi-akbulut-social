@@ -44,6 +44,7 @@ Stand: Oktober 2026.
 ## Chauffeurservice (Marke „AKBULUT. Fahrservice“, seit Okt. 2026)
 - Premium-Chauffeurservice für Geschäftsleute; Schwerpunkte laut Inhaber: Pünktlichkeit, Zuverlässigkeit, gepflegtes Auftreten, hochwertige Fahrzeuge.
 - Region im Markenauftritt: Tübingen · Reutlingen · Stuttgart.
+- VIP-Shuttle: Mercedes-Benz V-Klasse; Espresso an Bord, frisch im Fahrzeug zubereitet (laut Inhaber-Video, Okt. 2026).
 - Fahrzeuge: Mercedes E-Klasse (Limousine, T-Modell) und Mercedes V-Klasse (bis 7 Fahrgäste).
 - VIP-/Event-Shuttles mit V-Klassen durchgeführt, u. a. gemeinsam mit Fahrservice Legion und Fahrservice Hain (Reutlingen). Auftraggeber NICHT namentlich nennen.
 - NICHT behaupten (unbestätigt): Diskretions-/Verschwiegenheitszusagen, WLAN/Getränke an Bord, feste Fahrerzuordnung, Abrechnung auf Rechnung für Firmen, S-Klasse.

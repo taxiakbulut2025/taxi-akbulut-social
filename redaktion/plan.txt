@@ -26,6 +26,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-11-04 18:00 Mi | flughafen       | f02-ankunftsrechner
 2026-11-05 18:00 Do | ferntaxi        | t04-vier-koffer-chat
 2026-11-06 18:00 Fr | medizinkurier   | m02-blutproben-labor
+2026-11-07 11:00 Sa | reel            | espresso-an-bord
 2026-11-08 18:00 So | chauffeurservice | c04-darauf-bauen
 2026-11-09 18:00 Mo | taxi-tuebingen  | puenktlichkeit
 2026-11-10 18:00 Di | krankenfahrten  | k03-abrechnung-uebersicht
