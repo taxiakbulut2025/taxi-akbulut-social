@@ -31,6 +31,7 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "")
 BRANCH = os.environ.get("GITHUB_REF_NAME", "main")
 DRY_RUN = os.environ.get("DRY_RUN", "false").lower() == "true"
 YT_TEST = os.environ.get("YT_TEST", "false").lower() == "true"
+YT_UPDATE_ID = os.environ.get("YT_UPDATE_ID", "").strip()
 STATE_FILE = "state.json"
 MAX_ATTEMPTS = 3
 
@@ -192,15 +193,111 @@ def yt_token():
         raise RuntimeError(f"YouTube-Token: {e.code} {e.read().decode(errors='replace')}")
 
 
+# YouTube-SEO: Themen-Profile mit Tags (max. ~480 Zeichen), 3 Hashtags (erscheinen über dem Titel)
+# und einer Leistungszeile. Nur belegte Fakten (siehe redaktion/fakten.md).
+YT_PROFILES = {
+    "flughafen": {
+        "hashtags": ["#FlughafenStuttgart", "#Flughafentransfer", "#Tübingen"],
+        "service": "✈️ Flughafentransfer Tübingen – Flughafen Stuttgart (STR) zum Festpreis, 60 Min. Wartezeit inklusive",
+        "tags": ["Flughafentransfer Stuttgart", "Airport Shuttle Stuttgart", "Taxi Flughafen Stuttgart",
+                 "Flughafen Stuttgart", "Flughafentransfer Tübingen", "Taxi Tübingen Flughafen",
+                 "Flughafenshuttle Stuttgart", "Airport Transfer Stuttgart", "Taxi Reutlingen Flughafen",
+                 "Flughafentaxi", "Festpreis Flughafen", "STR Airport"]},
+    "krankenfahrten": {
+        "hashtags": ["#Krankenfahrt", "#Tübingen", "#TaxiTübingen"],
+        "service": "🏥 Krankenfahrten mit Direktabrechnung bei gesetzlichen Krankenkassen, Abholung an der Wohnungstür",
+        "tags": ["Krankenfahrt Tübingen", "Krankenfahrten", "Taxi Krankenkasse", "Dialysefahrt",
+                 "Krankenfahrt Reutlingen", "Taxi zum Arzt", "Krankentaxi Tübingen", "Fahrt zur Reha",
+                 "Bestrahlungsfahrt", "Direktabrechnung Krankenkasse", "Taxi Tübingen"]},
+    "medizinkurier": {
+        "hashtags": ["#Medizinkurier", "#Kurierdienst", "#Tübingen"],
+        "service": "🧊 Medizinischer Kurierdienst mit Kühlboxen für Praxen, Labore und Kliniken",
+        "tags": ["Medizinkurier Tübingen", "Medizinischer Kurierdienst", "Laborkurier", "Kurier Blutproben",
+                 "Medikamentenkurier", "Kurierdienst Tübingen", "Kurierdienst Reutlingen", "Laborproben Transport",
+                 "Kurier Praxis", "Kühltransport Medizin"]},
+    "event-shuttle": {
+        "hashtags": ["#EventShuttle", "#Tübingen", "#VKlasse"],
+        "service": "🎉 Event-Shuttle für Hochzeit, Firmenfeier, Messe und Abiball – Mercedes V-Klasse bis 7 Gäste",
+        "tags": ["Event Shuttle Tübingen", "Shuttleservice Tübingen", "Hochzeit Shuttle", "Firmenfeier Shuttle",
+                 "Messe Shuttle Stuttgart", "Shuttle Reutlingen", "VIP Shuttle", "Mercedes V-Klasse mit Fahrer",
+                 "Weihnachtsfeier Shuttle", "Abiball Shuttle", "Gruppenfahrt Tübingen"]},
+    "vip-shuttle": {
+        "hashtags": ["#VIPShuttle", "#Chauffeurservice", "#Stuttgart"],
+        "service": "🚐 VIP-Shuttle mit Chauffeur – Mercedes-Benz V-Klasse bis 7 Fahrgäste, auf Vorbestellung",
+        "tags": ["VIP Shuttle Stuttgart", "VIP Shuttle Tübingen", "Chauffeurservice Stuttgart",
+                 "Chauffeurservice Tübingen", "Mercedes V-Klasse mit Fahrer", "Limousinenservice Stuttgart",
+                 "Business Shuttle", "Fahrservice Reutlingen", "Event Shuttle", "Shuttleservice Stuttgart",
+                 "Fahrer mieten"]},
+    "chauffeurservice": {
+        "hashtags": ["#Chauffeurservice", "#Stuttgart", "#Tübingen"],
+        "service": "🎩 Chauffeurservice für Geschäftsreisende – Mercedes E- und V-Klasse mit Fahrer, auf Vorbestellung",
+        "tags": ["Chauffeurservice Stuttgart", "Chauffeurservice Tübingen", "Chauffeur Reutlingen",
+                 "Limousinenservice Stuttgart", "Business Chauffeur", "Fahrservice Stuttgart", "Fahrer mieten",
+                 "Mercedes mit Fahrer", "VIP Fahrservice", "Geschäftsreise Stuttgart", "Premium Fahrdienst"]},
+    "ferntaxi": {
+        "hashtags": ["#Ferntaxi", "#Langstrecke", "#Tübingen"],
+        "service": "🛣️ Ferntaxi und Langstrecke deutschlandweit – Preis vorab online",
+        "tags": ["Ferntaxi Tübingen", "Taxi Langstrecke", "Ferntaxi Stuttgart", "Taxi Fernfahrt",
+                 "Taxi deutschlandweit", "Taxi Festpreis Langstrecke", "Ferntaxi Reutlingen", "Taxi Tübingen",
+                 "Überführungsfahrt Taxi"]},
+    "taxi-tuebingen": {
+        "hashtags": ["#TaxiTübingen", "#Tübingen", "#Taxi"],
+        "service": "🚕 Taxi Tübingen – Familienbetrieb seit 1986, Fahrten online buchen und bezahlen",
+        "tags": ["Taxi Tübingen", "Taxi Reutlingen", "Taxiunternehmen Tübingen", "Taxi bestellen Tübingen",
+                 "Taxi online buchen", "Mietwagen mit Fahrer Tübingen", "Taxi Kusterdingen", "Taxi Rottenburg",
+                 "Taxi Akbulut"]},
+}
+YT_KEYWORDS = [("flughafen", "flughafen"), ("airport", "flughafen"), ("kranken", "krankenfahrten"),
+               ("medizinkurier", "medizinkurier"), ("vipshuttle", "vip-shuttle"), ("eventshuttle", "event-shuttle"),
+               ("chauffeur", "chauffeurservice"), ("ferntaxi", "ferntaxi")]
+YT_BASE_TAGS = ["Taxi Akbulut", "Taxi Akbulut Tübingen"]
+
+
+def yt_topic(post, caption):
+    for key in (post.get("yt_topic"), post.get("category")):
+        if key in YT_PROFILES:
+            return key
+    low = caption.lower()
+    for word, topic in YT_KEYWORDS:
+        if "#" + word in low or word in low.split("\n")[0]:
+            return topic
+    return "taxi-tuebingen"
+
+
+def yt_tags(*lists, limit=480):
+    out, seen, size = [], set(), 0
+    for tag in (t for lst in lists for t in lst):
+        key = tag.lower().replace(" ", "")
+        cost = len(tag) + (2 if " " in tag else 0) + 1
+        if key in seen or size + cost > limit:
+            continue
+        out.append(tag)
+        seen.add(key)
+        size += cost
+    return out
+
+
 def yt_metadata(post, caption):
     import re
-    tags = [t.lstrip("#") for t in re.findall(r"#\w+", caption)]
-    first = caption.split("\n")[0].strip()
+    prof = YT_PROFILES[yt_topic(post, caption)]
+    # Instagram-Hashtagzeile entfernen, Hashtags als Tags (CamelCase -> Wörter) weiterverwenden
+    ig_tags = [re.sub(r"(?<=[a-zäöü])(?=[A-ZÄÖÜ])", " ", t.lstrip("#")) for t in re.findall(r"#\w+", caption)]
+    body = "\n".join(l for l in caption.strip().split("\n") if not re.fullmatch(r"(\s*#\w+)+\s*", l)).strip()
+    body = body.replace("taxi-akbulut.de (Link im Profil)", "https://www.taxi-akbulut.de")
+    first = body.split("\n")[0].strip()
     title = post.get("yt_title") or (first if len(first) <= 95 else first[:92].rsplit(" ", 1)[0] + " …")
-    desc = post.get("yt_description") or (
-        caption.replace("taxi-akbulut.de (Link im Profil)", "https://www.taxi-akbulut.de")
-        + "\n\nTaxi Akbulut – Familienbetrieb seit 1986\nSchwärzlocher Str. 37, 72070 Tübingen")
-    return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags[:15],
+    info = "\n".join([
+        "━━━━━━━━━━━━━━━━━━━━",
+        prof["service"],
+        "📞 Telefon: +49 7071 1438591",
+        "🌐 Online buchen & bezahlen: https://www.taxi-akbulut.de",
+        "📍 Taxi Akbulut, Schwärzlocher Str. 37, 72070 Tübingen",
+        "🗺️ Einsatzgebiet: Tübingen, Reutlingen, Stuttgart, Flughafen Stuttgart (STR) – Fernfahrten deutschlandweit",
+        "👨‍👩‍👦 Familienbetrieb seit 1986, in zweiter Generation",
+    ])
+    desc = post.get("yt_description") or f"{body}\n\n{info}\n\n{' '.join(prof['hashtags'])}"
+    tags = yt_tags(post.get("yt_tags", []), prof["tags"], ig_tags, YT_BASE_TAGS)
+    return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags,
                         "categoryId": "2", "defaultLanguage": "de", "defaultAudioLanguage": "de"},
             "status": {"privacyStatus": post.get("yt_privacy", "public"), "selfDeclaredMadeForKids": False,
                        "containsSyntheticMedia": bool(post.get("ki", False))}}
@@ -274,8 +371,22 @@ def youtube_test_upload():
         with open(src, encoding="utf-8") as f:
             post = json.load(f)
         post["yt_privacy"] = "private"
-        vid = publish_youtube(post["video"], post, post["caption"])
-        lines.append(f"OK Video privat hochgeladen: https://youtu.be/{vid}")
+        if YT_UPDATE_ID:
+            meta = yt_metadata(post, post["caption"])
+            meta["id"] = YT_UPDATE_ID
+            req = urllib.request.Request(
+                "https://www.googleapis.com/youtube/v3/videos?part=snippet,status",
+                data=json.dumps(meta).encode(), method="PUT",
+                headers={"Authorization": f"Bearer {yt_token()}", "Content-Type": "application/json; charset=UTF-8"})
+            try:
+                with urllib.request.urlopen(req, timeout=60):
+                    pass
+            except urllib.error.HTTPError as e:
+                raise RuntimeError(f"YouTube-Update: {e.code} {e.read().decode(errors='replace')}")
+            lines.append(f"OK Titel/Beschreibung/Tags aktualisiert (privat): https://youtu.be/{YT_UPDATE_ID}")
+        else:
+            vid = publish_youtube(post["video"], post, post["caption"])
+            lines.append(f"OK Video privat hochgeladen: https://youtu.be/{vid}")
     except Exception as e:  # noqa: BLE001
         lines.append(f"FEHLER YouTube-Testupload: {str(e)[:600]}")
     print("\n".join(lines))

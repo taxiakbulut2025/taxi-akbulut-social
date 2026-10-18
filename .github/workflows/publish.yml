@@ -13,6 +13,10 @@ on:
         description: "YouTube-Testupload (privat), sonst nichts"
         type: boolean
         default: false
+      yt_update_id:
+        description: "Optional: YouTube-Video-ID, deren Texte beim Test nur aktualisiert werden"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -38,6 +42,7 @@ jobs:
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.yt_test || 'false' }}
+          YT_UPDATE_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.yt_update_id || '' }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
         run: python publisher/publish.py
       - name: Status speichern
