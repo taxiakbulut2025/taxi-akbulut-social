@@ -216,24 +216,20 @@ YT_PROFILES = {
                  "Medikamentenkurier", "Kurierdienst Tübingen", "Kurierdienst Reutlingen", "Laborproben Transport",
                  "Kurier Praxis", "Kühltransport Medizin"]},
     "event-shuttle": {
+        "niche": "chauffeur",
         "hashtags": ["#EventShuttle", "#Tübingen", "#VKlasse"],
         "service": "🎉 Event-Shuttle für Hochzeit, Firmenfeier, Messe und Abiball – Mercedes V-Klasse bis 7 Gäste",
         "tags": ["Event Shuttle Tübingen", "Shuttleservice Tübingen", "Hochzeit Shuttle", "Firmenfeier Shuttle",
                  "Messe Shuttle Stuttgart", "Shuttle Reutlingen", "VIP Shuttle", "Mercedes V-Klasse mit Fahrer",
                  "Weihnachtsfeier Shuttle", "Abiball Shuttle", "Gruppenfahrt Tübingen"]},
-    "vip-shuttle": {
-        "hashtags": ["#VIPShuttle", "#Chauffeurservice", "#Stuttgart"],
-        "service": "🚐 VIP-Shuttle mit Chauffeur – Mercedes-Benz V-Klasse bis 7 Fahrgäste, auf Vorbestellung",
-        "tags": ["VIP Shuttle Stuttgart", "VIP Shuttle Tübingen", "Chauffeurservice Stuttgart",
-                 "Chauffeurservice Tübingen", "Mercedes V-Klasse mit Fahrer", "Limousinenservice Stuttgart",
-                 "Business Shuttle", "Fahrservice Reutlingen", "Event Shuttle", "Shuttleservice Stuttgart",
-                 "Fahrer mieten"]},
     "chauffeurservice": {
-        "hashtags": ["#Chauffeurservice", "#Stuttgart", "#Tübingen"],
-        "service": "🎩 Chauffeurservice für Geschäftsreisende – Mercedes E- und V-Klasse mit Fahrer, auf Vorbestellung",
-        "tags": ["Chauffeurservice Stuttgart", "Chauffeurservice Tübingen", "Chauffeur Reutlingen",
-                 "Limousinenservice Stuttgart", "Business Chauffeur", "Fahrservice Stuttgart", "Fahrer mieten",
-                 "Mercedes mit Fahrer", "VIP Fahrservice", "Geschäftsreise Stuttgart", "Premium Fahrdienst"]},
+        "niche": "chauffeur",
+        "hashtags": ["#Chauffeurservice", "#ChauffeurserviceStuttgart", "#ChauffeurserviceTübingen"],
+        "service": "🎩 Exklusiver Chauffeurservice – Mercedes-Benz E- und V-Klasse mit Fahrer, auf Vorbestellung",
+        "tags": ["Exklusiver Chauffeurservice", "Chauffeurservice Stuttgart", "Chauffeurservice Tübingen",
+                 "Chauffeurservice Reutlingen", "Mercedes V-Klasse mit Chauffeur", "Business Chauffeur",
+                 "Fahrservice Stuttgart", "Chauffeur mieten", "Mercedes mit Fahrer", "Premium Fahrdienst",
+                 "Geschäftsreise Stuttgart"]},
     "ferntaxi": {
         "hashtags": ["#Ferntaxi", "#Langstrecke", "#Tübingen"],
         "service": "🛣️ Ferntaxi und Langstrecke deutschlandweit – Preis vorab online",
@@ -248,18 +244,30 @@ YT_PROFILES = {
                  "Taxi Akbulut"]},
 }
 YT_KEYWORDS = [("flughafen", "flughafen"), ("airport", "flughafen"), ("kranken", "krankenfahrten"),
-               ("medizinkurier", "medizinkurier"), ("vipshuttle", "vip-shuttle"), ("eventshuttle", "event-shuttle"),
+               ("medizinkurier", "medizinkurier"), ("vipshuttle", "chauffeurservice"), ("eventshuttle", "event-shuttle"),
                ("chauffeur", "chauffeurservice"), ("ferntaxi", "ferntaxi")]
-# Kern-Leistungen: stehen in JEDEM YouTube-Video (Tags + Hashtags), egal welches Thema.
+# Zwei Nischen, klar getrennt: klassisches Taxi und exklusiver Chauffeurservice.
+# Die Kern-Hashtags/Tags der jeweiligen Nische stehen in JEDEM Video dieser Nische.
 # YouTube ignoriert ALLE Hashtags, wenn es mehr als 15 sind – daher Gesamtzahl begrenzt.
-YT_BASE_TAGS = ["Taxi Tübingen", "Flughafentransfer Stuttgart", "Flughafentransfer Tübingen",
-                "Krankenfahrten Tübingen", "Ferntaxi", "Chauffeurservice", "Taxi Akbulut"]
-YT_BASE_HASHTAGS = ["#TaxiTübingen", "#FlughafentransferStuttgart", "#FlughafentransferTübingen",
-                    "#KrankenfahrtenTübingen", "#Ferntaxi", "#Chauffeurservice", "#TaxiAkbulut"]
+YT_BASE = {
+    "taxi": {
+        "tags": ["Taxi Tübingen", "Flughafentransfer Stuttgart", "Flughafentransfer Tübingen",
+                 "Krankenfahrten Tübingen", "Ferntaxi", "Chauffeurservice", "Taxi Akbulut"],
+        "hashtags": ["#TaxiTübingen", "#FlughafentransferStuttgart", "#FlughafentransferTübingen",
+                     "#KrankenfahrtenTübingen", "#Ferntaxi", "#Chauffeurservice", "#TaxiAkbulut"],
+        "area": "Tübingen, Reutlingen, Stuttgart, Flughafen Stuttgart (STR) – Fernfahrten deutschlandweit"},
+    "chauffeur": {
+        "tags": ["Chauffeurservice", "Exklusiver Chauffeurservice", "Chauffeurservice Tübingen",
+                 "Chauffeurservice Stuttgart", "Chauffeurservice Reutlingen", "Taxi Akbulut"],
+        "hashtags": ["#Chauffeurservice", "#ChauffeurserviceStuttgart", "#ChauffeurserviceTübingen",
+                     "#ChauffeurserviceReutlingen", "#MercedesVKlasse", "#TaxiAkbulut"],
+        "area": "Tübingen, Reutlingen, Stuttgart und Flughafen Stuttgart (STR)"},
+}
 
 
 def yt_topic(post, caption):
-    for key in (post.get("yt_topic"), post.get("category")):
+    alias = {"vip-shuttle": "chauffeurservice"}
+    for key in (alias.get(post.get("yt_topic"), post.get("yt_topic")), post.get("category")):
         if key in YT_PROFILES:
             return key
     low = caption.lower()
@@ -285,6 +293,7 @@ def yt_tags(*lists, limit=480):
 def yt_metadata(post, caption):
     import re
     prof = YT_PROFILES[yt_topic(post, caption)]
+    base = YT_BASE[prof.get("niche", "taxi")]
     # Instagram-Hashtagzeile entfernen, Hashtags als Tags (CamelCase -> Wörter) weiterverwenden
     ig_tags = [re.sub(r"(?<=[a-zäöü])(?=[A-ZÄÖÜ])", " ", t.lstrip("#")) for t in re.findall(r"#\w+", caption)]
     body = "\n".join(l for l in caption.strip().split("\n") if not re.fullmatch(r"(\s*#\w+)+\s*", l)).strip()
@@ -297,12 +306,12 @@ def yt_metadata(post, caption):
         "📞 Telefon: +49 7071 1438591",
         "🌐 Online buchen & bezahlen: https://www.taxi-akbulut.de",
         "📍 Taxi Akbulut, Schwärzlocher Str. 37, 72070 Tübingen",
-        "🗺️ Einsatzgebiet: Tübingen, Reutlingen, Stuttgart, Flughafen Stuttgart (STR) – Fernfahrten deutschlandweit",
+        "🗺️ Einsatzgebiet: " + base["area"],
         "👨‍👩‍👦 Familienbetrieb seit 1986, in zweiter Generation",
     ])
-    hashtags = list(dict.fromkeys(prof["hashtags"] + YT_BASE_HASHTAGS))[:15]
+    hashtags = list(dict.fromkeys(prof["hashtags"] + base["hashtags"]))[:15]
     desc = post.get("yt_description") or f"{body}\n\n{info}\n\n{' '.join(hashtags)}"
-    tags = yt_tags(post.get("yt_tags", []), YT_BASE_TAGS, prof["tags"], ig_tags, ["Taxi Akbulut Tübingen"])
+    tags = yt_tags(post.get("yt_tags", []), base["tags"], prof["tags"], ig_tags, ["Taxi Akbulut Tübingen"])
     return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags,
                         "categoryId": "2", "defaultLanguage": "de", "defaultAudioLanguage": "de"},
             "status": {"privacyStatus": post.get("yt_privacy", "public"), "selfDeclaredMadeForKids": False,
@@ -463,6 +472,15 @@ def main():
                         post["youtube_id"] = publish_youtube(post["video"], post, caption)
                     except Exception as e:  # noqa: BLE001
                         post["youtube_error"] = str(e)[:500]
+                    save_json(path, post)
+                # Optionale 16:9-Fassung als normales YouTube-Video (eigener Titel, kein Short)
+                if YT_ENABLED and post.get("yt_landscape") and not post.get("youtube_landscape_id") \
+                        and not post.get("youtube_landscape_error"):
+                    try:
+                        lpost = dict(post, yt_title=post.get("yt_landscape_title") or post.get("yt_title"))
+                        post["youtube_landscape_id"] = publish_youtube(post["yt_landscape"], lpost, caption)
+                    except Exception as e:  # noqa: BLE001
+                        post["youtube_landscape_error"] = str(e)[:500]
                     save_json(path, post)
             else:
                 image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"

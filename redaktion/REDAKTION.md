@@ -85,3 +85,10 @@
 - Kopf: Goldquadrat „A.“ + „AKBULUT.“ (Punkt gold), rechts „CHAUFFEURSERVICE“ gesperrt in Gold. Fuß: „TÜBINGEN · REUTLINGEN · STUTTGART“ + „ONLINE BUCHEN“ + taxi-akbulut.de.
 - Überschrift endet mit goldenem Punkt. Kein Wort „Taxi“ im Bild. Gelb (#F2C230) hier nicht verwenden.
 - Fotos nur echte eigene Fahrzeugfotos, abgedunkelt; keine Kundenmarken im Text.
+
+## Zwei Nischen – klar getrennt (Vorgabe Yasin, 18.10.2026)
+- **Klassisches Taxi:** Taxi Tübingen, Flughafentransfer, Krankenfahrten, Ferntaxi, Medizinkurier.
+- **Exklusiver Chauffeurservice:** Chauffeur-Fahrten, Mercedes V-/E-Klasse mit Fahrer, Event-Shuttle.
+- Nicht „VIP-Shuttle“ schreiben, sondern **„exklusiver Chauffeurservice“**.
+- YouTube: Jedes Reel wird automatisch als Short hochgeladen; Kern-Hashtags/Tags je Nische setzt publisher/publish.py (YT_BASE).
+  Für normale YouTube-Videos braucht es eine eigene 16:9-Fassung (Feld `yt_landscape` + `yt_landscape_title`).
