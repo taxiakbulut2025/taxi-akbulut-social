@@ -174,6 +174,58 @@ def save_json(path, data):
         f.write("\n")
 
 
+# ---------------- YouTube (nur Reels/Videos) ----------------
+YT_CLIENT_ID = os.environ.get("YT_CLIENT_ID", "")
+YT_CLIENT_SECRET = os.environ.get("YT_CLIENT_SECRET", "")
+YT_REFRESH_TOKEN = os.environ.get("YT_REFRESH_TOKEN", "")
+YT_ENABLED = bool(YT_CLIENT_ID and YT_CLIENT_SECRET and YT_REFRESH_TOKEN)
+
+
+def yt_token():
+    data = urllib.parse.urlencode({"client_id": YT_CLIENT_ID, "client_secret": YT_CLIENT_SECRET,
+                                   "refresh_token": YT_REFRESH_TOKEN, "grant_type": "refresh_token"}).encode()
+    try:
+        with urllib.request.urlopen(urllib.request.Request("https://oauth2.googleapis.com/token", data=data), timeout=60) as r:
+            return json.loads(r.read())["access_token"]
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"YouTube-Token: {e.code} {e.read().decode(errors='replace')}")
+
+
+def yt_metadata(post, caption):
+    import re
+    tags = [t.lstrip("#") for t in re.findall(r"#\w+", caption)]
+    first = caption.split("\n")[0].strip()
+    title = post.get("yt_title") or (first if len(first) <= 95 else first[:92].rsplit(" ", 1)[0] + " …")
+    desc = post.get("yt_description") or (
+        caption.replace("taxi-akbulut.de (Link im Profil)", "https://www.taxi-akbulut.de")
+        + "\n\nTaxi Akbulut – Familienbetrieb seit 1986\nSchwärzlocher Str. 37, 72070 Tübingen")
+    return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags[:15],
+                        "categoryId": "2", "defaultLanguage": "de", "defaultAudioLanguage": "de"},
+            "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": False,
+                       "containsSyntheticMedia": bool(post.get("ki", False))}}
+
+
+def publish_youtube(video_path, post, caption):
+    token = yt_token()
+    with open(video_path, "rb") as f:
+        data = f.read()
+    meta = json.dumps(yt_metadata(post, caption)).encode()
+    req = urllib.request.Request(
+        "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
+        data=meta, method="POST",
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json; charset=UTF-8",
+                 "X-Upload-Content-Type": "video/mp4", "X-Upload-Content-Length": str(len(data))})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            upload_url = r.headers["Location"]
+        up = urllib.request.Request(upload_url, data=data, method="PUT",
+                                    headers={"Authorization": f"Bearer {token}", "Content-Type": "video/mp4"})
+        with urllib.request.urlopen(up, timeout=600) as r:
+            return json.loads(r.read())["id"]
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"YouTube-Upload: {e.code} {e.read().decode(errors='replace')}")
+
+
 def check_access():
     """Testlauf: prüft Secrets und Berechtigungen, ohne etwas zu veröffentlichen."""
     lines = [f"Testlauf {dt.datetime.now(TZ).isoformat(timespec='minutes')}"]
@@ -196,6 +248,18 @@ def check_access():
                 lines.append(f"HINWEIS Standort nicht prüfbar: {str(e)[:200]}")
     except Exception as e:  # noqa: BLE001
         lines.append(f"FEHLER: {str(e)[:500]}")
+    if YT_ENABLED:
+        try:
+            tok = yt_token()
+            req = urllib.request.Request("https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
+                                         headers={"Authorization": f"Bearer {tok}"})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                items = json.loads(r.read()).get("items", [])
+            lines.append("OK YouTube-Kanal erreichbar: " + (items[0]["snippet"]["title"] if items else "KEIN KANAL GEFUNDEN"))
+        except Exception as e:  # noqa: BLE001
+            lines.append(f"FEHLER YouTube: {str(e)[:400]}")
+    else:
+        lines.append("HINWEIS YouTube nicht eingerichtet (Secrets YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN fehlen)")
     print("\n".join(lines))
     with open("testlauf.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
@@ -253,6 +317,14 @@ def main():
                     save_json(path, post)
                 if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
                     post["facebook_id"] = publish_facebook_video(post["video"], caption)
+                    save_json(path, post)
+                # YouTube zuletzt; ein YouTube-Fehler stoppt Instagram/Facebook nicht.
+                if YT_ENABLED and post.get("youtube", True) and not post.get("youtube_id") \
+                        and not post.get("youtube_error"):
+                    try:
+                        post["youtube_id"] = publish_youtube(post["video"], post, caption)
+                    except Exception as e:  # noqa: BLE001
+                        post["youtube_error"] = str(e)[:500]
                     save_json(path, post)
             else:
                 image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"
