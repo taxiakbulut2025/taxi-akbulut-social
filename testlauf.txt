@@ -1,21 +1,2 @@
-YouTube-Testupload 2026-10-18T13:07+02:00
-FEHLER YouTube-Testupload: YouTube-Update: 403 {
-  "error": {
-    "code": 403,
-    "message": "Request had insufficient authentication scopes.",
-    "errors": [
-      {
-        "message": "Insufficient Permission",
-        "domain": "global",
-        "reason": "insufficientPermissions"
-      }
-    ],
-    "status": "PERMISSION_DENIED",
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "reason": "ACCESS_TOKEN_SCOPE_INSUFFICIENT",
-        "domain": "googleapis.com",
-        "metadata": {
-          "service": "youtube.googleapis.com",
-          "method": "youtube.api.v3.V3DataVide
+YouTube-Testupload 2026-10-18T13:12+02:00
+OK Video privat hochgeladen: https://youtu.be/AzW5AZ2k1bU
