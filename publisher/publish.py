@@ -250,7 +250,12 @@ YT_PROFILES = {
 YT_KEYWORDS = [("flughafen", "flughafen"), ("airport", "flughafen"), ("kranken", "krankenfahrten"),
                ("medizinkurier", "medizinkurier"), ("vipshuttle", "vip-shuttle"), ("eventshuttle", "event-shuttle"),
                ("chauffeur", "chauffeurservice"), ("ferntaxi", "ferntaxi")]
-YT_BASE_TAGS = ["Taxi Akbulut", "Taxi Akbulut Tübingen"]
+# Kern-Leistungen: stehen in JEDEM YouTube-Video (Tags + Hashtags), egal welches Thema.
+# YouTube ignoriert ALLE Hashtags, wenn es mehr als 15 sind – daher Gesamtzahl begrenzt.
+YT_BASE_TAGS = ["Taxi Tübingen", "Flughafentransfer Stuttgart", "Flughafentransfer Tübingen",
+                "Krankenfahrten Tübingen", "Ferntaxi", "Chauffeurservice", "Taxi Akbulut"]
+YT_BASE_HASHTAGS = ["#TaxiTübingen", "#FlughafentransferStuttgart", "#FlughafentransferTübingen",
+                    "#KrankenfahrtenTübingen", "#Ferntaxi", "#Chauffeurservice", "#TaxiAkbulut"]
 
 
 def yt_topic(post, caption):
@@ -295,8 +300,9 @@ def yt_metadata(post, caption):
         "🗺️ Einsatzgebiet: Tübingen, Reutlingen, Stuttgart, Flughafen Stuttgart (STR) – Fernfahrten deutschlandweit",
         "👨‍👩‍👦 Familienbetrieb seit 1986, in zweiter Generation",
     ])
-    desc = post.get("yt_description") or f"{body}\n\n{info}\n\n{' '.join(prof['hashtags'])}"
-    tags = yt_tags(post.get("yt_tags", []), prof["tags"], ig_tags, YT_BASE_TAGS)
+    hashtags = list(dict.fromkeys(prof["hashtags"] + YT_BASE_HASHTAGS))[:15]
+    desc = post.get("yt_description") or f"{body}\n\n{info}\n\n{' '.join(hashtags)}"
+    tags = yt_tags(post.get("yt_tags", []), YT_BASE_TAGS, prof["tags"], ig_tags, ["Taxi Akbulut Tübingen"])
     return {"snippet": {"title": title[:100], "description": desc[:4900], "tags": tags,
                         "categoryId": "2", "defaultLanguage": "de", "defaultAudioLanguage": "de"},
             "status": {"privacyStatus": post.get("yt_privacy", "public"), "selfDeclaredMadeForKids": False,
