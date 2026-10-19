@@ -414,9 +414,14 @@ def fetch_remote_videos():
     for path in sorted(glob.glob("queue/*.json")):
         with open(path, encoding="utf-8") as f:
             post = json.load(f)
-        url, target = post.get("video_url"), post.get("video")
+        for url, target in ((post.get("video_url"), post.get("video")),
+                            (post.get("yt_landscape_url"), post.get("yt_landscape"))):
+            _fetch_video(url, target)
+
+
+def _fetch_video(url, target):
         if not (url and target) or os.path.exists(target):
-            continue
+            return
         try:
             os.makedirs(os.path.dirname(target), exist_ok=True)
             req = urllib.request.Request(url, headers={"User-Agent": "taxi-akbulut-social"})
