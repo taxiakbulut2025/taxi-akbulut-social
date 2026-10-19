@@ -1,2 +1,6 @@
-YouTube-Testupload 2026-10-18T13:12+02:00
-OK Video privat hochgeladen: https://youtu.be/AzW5AZ2k1bU
+Testlauf 2026-10-19T07:40+02:00
+OK Instagram erreichbar: @taxiakbulut
+OK Posting-Berechtigung, Kontingent: [{'quota_usage': 2}]
+OK Facebook-Seite erreichbar: Taxi Akbulut Tübingen
+OK Standort-Markierung möglich: Taxi Akbulut Tübingen {'city': 'Tübingen', 'country': 'Germany', 'latitude': 48.522712996953, 'longitude': 9.058318734169, 'street': 'Schwärzlocher Str. 37', 'zip': '72070'}
+OK YouTube-Kanal erreichbar: Taxi Akbulut Tübingen 
