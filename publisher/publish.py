@@ -5,8 +5,11 @@ Instagram (und optional auf der Facebook-Seite) über die Meta Graph API.
 
 Regeln:
 - Ein Post ist fällig, wenn publish_at (Europe/Berlin) erreicht ist.
-- Höchstens ein Post pro Kalendertag, damit ein Rückstand nach einer
-  Pause nicht auf einmal rausgeht.
+- Höchstens ein Post pro Kalendertag und Spur (Feld "lane": main = Standard,
+  story = reine Story, extra = Zusatz-Beitrag), damit ein Rückstand nach
+  einer Pause nicht auf einmal rausgeht.
+- "type": "story" veröffentlicht nur eine Instagram-Story (story_image),
+  optional mit "user_tags": ["benutzername", …].
 - Bilder werden über raw.githubusercontent.com öffentlich bereitgestellt
   (Instagram verlangt eine öffentliche JPEG-Adresse).
 """
@@ -81,8 +84,11 @@ def publish_instagram(image_url, caption, post):
     return p["id"]
 
 
-def publish_instagram_story(image_url):
-    c = graph("POST", f"{IG_USER_ID}/media", {"image_url": image_url, "media_type": "STORIES"})
+def publish_instagram_story(image_url, usernames=None):
+    params = {"image_url": image_url, "media_type": "STORIES"}
+    if usernames:
+        params["user_tags"] = json.dumps([{"username": u.lstrip("@")} for u in usernames])
+    c = graph("POST", f"{IG_USER_ID}/media", params)
     cid = c["id"]
     for _ in range(20):
         s = graph("GET", cid, {"fields": "status_code"})
@@ -445,9 +451,7 @@ def main():
     now = dt.datetime.now(TZ)
     today = now.date().isoformat()
     state = load_state()
-    if state.get("last_published_date") == today:
-        print("Heute wurde bereits gepostet – nichts zu tun.")
-        return
+    blocked = False
 
     for path in sorted(glob.glob("queue/*.json")):
         with open(path, encoding="utf-8") as f:
@@ -455,15 +459,33 @@ def main():
         due = dt.datetime.strptime(post["publish_at"], "%Y-%m-%d %H:%M").replace(tzinfo=TZ)
         if due > now:
             continue
+        lane = post.get("lane", "main")
+        lane_key = "last_published_date" if lane == "main" else f"last_{lane}_date"
+        if state.get(lane_key) == today:
+            blocked = True
+            continue
         is_reel = post.get("type") == "reel"
-        caption = post["caption"][:2200]
-        print(f"Fällig: {path} ({'Reel' if is_reel else 'Bild'})")
+        is_story = post.get("type") == "story"
+        caption = post.get("caption", "")[:2200]
+        print(f"Fällig: {path} ({'Reel' if is_reel else 'Story' if is_story else 'Bild'}, Spur {lane})")
         if DRY_RUN:
             print("DRY_RUN – nichts veröffentlicht.\n" + caption)
             return
         try:
             # Bereits erledigte Kanäle (z. B. nach einem Teilfehler) werden nicht doppelt gepostet.
-            if is_reel:
+            if is_story:
+                if not post.get("story_id"):
+                    story_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['story_image']}"
+                    tags = post.get("user_tags") or []
+                    try:
+                        post["story_id"] = publish_instagram_story(story_url, tags)
+                    except Exception as e:  # noqa: BLE001 – Markierung fehlerhaft: ohne Markierung posten
+                        if not tags:
+                            raise
+                        post["user_tags_error"] = str(e)[:500]
+                        post["story_id"] = publish_instagram_story(story_url)
+                    save_json(path, post)
+            elif is_reel:
                 if post.get("instagram", True) and not post.get("instagram_id"):
                     post["instagram_id"] = publish_instagram_reel(post["video"], caption, post)
                     save_json(path, post)
@@ -509,7 +531,7 @@ def main():
             os.makedirs("published", exist_ok=True)
             save_json(path, post)
             shutil.move(path, os.path.join("published", os.path.basename(path)))
-            state["last_published_date"] = today
+            state[lane_key] = today
             save_json(STATE_FILE, state)
             print(f"Veröffentlicht: {path}")
         except Exception as e:  # noqa: BLE001
@@ -522,7 +544,7 @@ def main():
             print(f"FEHLER: {e}")
             sys.exit(1)
         return  # höchstens ein Post pro Lauf
-    print("Kein fälliger Post.")
+    print("Heute wurde bereits gepostet – nichts zu tun." if blocked else "Kein fälliger Post.")
 
 
 if __name__ == "__main__":

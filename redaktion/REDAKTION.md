@@ -15,6 +15,10 @@
 - Kein Motiv wiederholen, das in `queue/` oder `published/` schon vorkommt (Feld `motiv`, Überschrift).
 - Übersicht aller Termine: `redaktion/plan.txt` – nach jeder Änderung aktualisieren.
 
+## Zusatz-Spuren (seit 20.10.2026)
+- Neben dem Haupt-Post (1 pro Tag) gibt es eigene Spuren mit je höchstens 1 Post pro Tag: `"lane": "story"` (reine Story, `"type": "story"`, nur `story_image`, kein Text, optional `"user_tags": ["benutzername"]`) und `"lane": "extra"` (Zusatz-Beitrag, z. B. Reel um 12:30).
+- Einsatz: Bekanntmachung des exklusiven Chauffeurservice (Stories 12:00/13:00 im Markenstil AKBULUT.). Partner Fahrservice Legion auf Instagram: @dielegion.
+
 ## Reels (1× pro Woche, Samstag 11:00)
 - Zusätzlich zu den Bild-Posts ein Reel pro Woche, samstags 11:00, aus dem stärksten Motiv der Woche.
 - Format 1080 × 1920, 9 Sekunden, 30 fps. Vorlage: `vorlagen/reel-gelandet.html` (CSS-Animationen mit Verzögerung, Elemente erscheinen nacheinander).

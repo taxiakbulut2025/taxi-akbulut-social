@@ -1,4 +1,4 @@
-Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flughafen · Do Ferntaxi · Fr Event-Shuttle/Medizinkurier im Wechsel · Sa Reel · So Chauffeurservice)
+Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flughafen · Do Ferntaxi · Fr Event-Shuttle/Medizinkurier im Wechsel · Sa Reel · So Chauffeurservice) · Extra: Chauffeur-Stories 12:00/13:00 und Zusatz-Reels 12:30 (eigene Spuren)
 2026-10-11 09:00 | neukunden-15-prozent | veröffentlicht
 2026-10-12 18:00 Mo | taxi-tuebingen  | seit-1986
 2026-10-13 18:00 Di | krankenfahrten  | k01-wohnungstuer-bis-praxis
@@ -9,12 +9,21 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-10-18 18:00 So | chauffeurservice | c01-termin-beginnt
 2026-10-19 18:00 Mo | taxi-tuebingen  | kartenzahlung
 2026-10-20 18:00 Di | krankenfahrten  | krankenfahrten
+2026-10-21 12:00 Mi | story           | cs01-neu
 2026-10-21 18:00 Mi | flughafen       | f01-festpreis-85
+2026-10-22 12:30 Do | reel (extra)    | v-klasse-praesentation
+2026-10-22 13:00 Do | story           | cs02-video
 2026-10-22 18:00 Do | ferntaxi        | ferntaxi
+2026-10-23 12:00 Fr | story           | cs03-vier-sitze
 2026-10-23 18:00 Fr | medizinkurier   | m01-kuehl-bleibt-kuehl
 2026-10-24 11:00 Sa | reel            | vip-shuttle-cinema
+2026-10-24 12:00 Sa | story           | cs04-legion (@dielegion markiert)
+2026-10-25 12:30 So | reel (extra)    | v-klasse-einsteigen
+2026-10-25 13:00 So | story           | cs05-einsteigen
 2026-10-25 18:00 So | chauffeurservice | c02-wir-warten
+2026-10-26 12:00 Mo | story           | cs06-seit-1986
 2026-10-26 18:00 Mo | taxi-tuebingen  | der-chef-faehrt-selbst
+2026-10-27 12:00 Di | story           | cs07-vorbestellen
 2026-10-27 18:00 Di | krankenfahrten  | s3-krankenfahrt-reha
 2026-10-28 18:00 Mi | flughafen       | flugverspaetung
 2026-10-29 18:00 Do | ferntaxi        | t02-zug-faellt-aus
@@ -33,7 +42,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-11-11 18:00 Mi | flughafen       | fruehflug
 2026-11-12 18:00 Do | ferntaxi        | s3-ferntaxi
 2026-11-13 18:00 Fr | event-shuttle   | e03-sieben-gaeste
-2026-11-14 11:00 Sa | reel            | v-klasse-praesentation
+2026-11-14 11:00 Sa | reel            | v-klasse-luxus-liner
 2026-11-15 18:00 So | chauffeurservice | c07-tuer-offen
 2026-11-16 18:00 Mo | taxi-tuebingen  | bahnhof-abholung
 2026-11-17 18:00 Di | krankenfahrten  | s3-krankenfahrt-chemo-strahlentherapie
@@ -46,7 +55,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-11-25 18:00 Mi | flughafen       | v-klasse
 2026-11-26 18:00 Do | ferntaxi        | t05-kein-umsteigen
 2026-11-27 18:00 Fr | event-shuttle   | e04-weihnachtsfeier
-2026-11-28 11:00 Sa | reel            | v-klasse-einsteigen
+2026-11-28 11:00 Sa | reel            | v-klasse-seit-1986
 2026-11-29 18:00 So | chauffeurservice | c10-einmal-buchen
 2026-11-30 18:00 Mo | taxi-tuebingen  | festpreis-tuebingen
 2026-12-01 18:00 Di | krankenfahrten  | arbeitsunfall-bg
@@ -58,7 +67,6 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-12-09 18:00 Mi | flughafen       | crew-transfer
 2026-12-10 18:00 Do | ferntaxi        | t07-familie-weit-weg
 2026-12-11 18:00 Fr | event-shuttle   | e07-14-gaeste-chat
-2026-12-12 11:00 Sa | reel            | v-klasse-luxus-liner
 2026-12-13 18:00 So | chauffeurservice | c08-wagen-anlass
 2026-12-15 18:00 Di | krankenfahrten  | k10-angehoerige
 2026-12-16 18:00 Mi | flughafen       | f05-flug-verschoben
@@ -73,7 +81,6 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2027-01-06 18:00 Mi | flughafen       | privatjet-gat
 2027-01-07 18:00 Do | ferntaxi        | t08-erstes-ferntaxi-15
 2027-01-08 18:00 Fr | event-shuttle   | e02-hochzeit
-2027-01-09 11:00 Sa | reel            | v-klasse-seit-1986
 2027-01-12 18:00 Di | krankenfahrten  | s3-krankenfahrt-bg
 2027-01-13 18:00 Mi | flughafen       | f07-urlaub-zu-siebt
 2027-01-14 18:00 Do | ferntaxi        | t10-erfahrung
