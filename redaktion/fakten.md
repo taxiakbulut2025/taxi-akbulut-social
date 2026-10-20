@@ -15,6 +15,7 @@ Stand: Oktober 2026.
 - E-Klasse Limousine: 4 Personen, 2 Koffer, 2 Handgepäck
 - E-Klasse T-Modell: 4 Personen, 4 Koffer, 2 Handgepäck
 - V-Klasse (Business Liner): 7 Personen, 7 Koffer, 4 Handgepäck
+- V-Klasse Luxus-Liner (Chauffeurservice, Fahrzeug in den KI-Reels): nur 4 Sitze – NICHT mit 7 Personen bewerben (laut Yasin, 20.10.2026).
 
 ## Flughafentransfer
 - 15 Festpreisstrecken zu Flughäfen.
