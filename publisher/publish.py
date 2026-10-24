@@ -1,7 +1,8 @@
 """Taxi Akbulut Social-Autopilot – Publisher.
 
 Läuft in GitHub Actions. Veröffentlicht fällige Posts aus queue/ auf
-Instagram (und optional auf der Facebook-Seite) über die Meta Graph API.
+Instagram (und optional auf der Facebook-Seite) über die Meta Graph API,
+Reels zusätzlich auf YouTube, ausgewählte Themen auf der LinkedIn-Unternehmensseite.
 
 Regeln:
 - Ein Post ist fällig, wenn publish_at (Europe/Berlin) erreicht ist.
@@ -345,6 +346,157 @@ def publish_youtube(video_path, post, caption):
         raise RuntimeError(f"YouTube-Upload: {e.code} {e.read().decode(errors='replace')}")
 
 
+# ---------------- LinkedIn-Unternehmensseite ----------------
+# Zugang: entweder Refresh-Token (läuft ca. 1 Jahr) oder direkt ein Access-Token (läuft ca. 60 Tage).
+LI_CLIENT_ID = os.environ.get("LINKEDIN_CLIENT_ID", "")
+LI_CLIENT_SECRET = os.environ.get("LINKEDIN_CLIENT_SECRET", "")
+LI_REFRESH_TOKEN = os.environ.get("LINKEDIN_REFRESH_TOKEN", "")
+LI_ACCESS_TOKEN = os.environ.get("LINKEDIN_ACCESS_TOKEN", "")
+LI_ORG_ID = os.environ.get("LINKEDIN_ORG_ID", "").strip()
+LI_ENABLED = bool(LI_ORG_ID and (LI_ACCESS_TOKEN or (LI_CLIENT_ID and LI_CLIENT_SECRET and LI_REFRESH_TOKEN)))
+LI_ORG = f"urn:li:organization:{LI_ORG_ID}"
+# Diese Themen gehen standardmäßig auch auf LinkedIn; "linkedin": true/false im Post überschreibt das.
+LI_CATEGORIES = {"chauffeurservice", "ferntaxi", "flughafen", "medizinkurier", "event-shuttle", "reel"}
+LI_RESERVED = set("\\|{}@[]()<>#*_~")
+_LI_TOKEN = None
+
+
+def li_version():
+    """LinkedIn verlangt eine API-Version JJJJMM; drei Monate zurück ist immer noch gültig."""
+    if os.environ.get("LINKEDIN_VERSION"):
+        return os.environ["LINKEDIN_VERSION"]
+    d = dt.date.today().replace(day=1)
+    for _ in range(3):
+        d = (d - dt.timedelta(days=1)).replace(day=1)
+    return d.strftime("%Y%m")
+
+
+def li_token(state=None):
+    global _LI_TOKEN
+    if _LI_TOKEN:
+        return _LI_TOKEN
+    if not (LI_CLIENT_ID and LI_CLIENT_SECRET and LI_REFRESH_TOKEN):
+        _LI_TOKEN = LI_ACCESS_TOKEN
+        return _LI_TOKEN
+    data = urllib.parse.urlencode({"grant_type": "refresh_token", "refresh_token": LI_REFRESH_TOKEN,
+                                   "client_id": LI_CLIENT_ID, "client_secret": LI_CLIENT_SECRET}).encode()
+    req = urllib.request.Request("https://www.linkedin.com/oauth/v2/accessToken", data=data,
+                                 headers={"Content-Type": "application/x-www-form-urlencoded"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            res = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"LinkedIn-Token: {e.code} {e.read().decode(errors='replace')} "
+                           "(Refresh-Token abgelaufen? Dann in LinkedIn neu erzeugen und Secret ersetzen.)")
+    _LI_TOKEN = res["access_token"]
+    if state is not None and res.get("refresh_token_expires_in"):
+        until = dt.date.today() + dt.timedelta(seconds=int(res["refresh_token_expires_in"]))
+        state["linkedin_refresh_token_expires"] = until.isoformat()
+    return _LI_TOKEN
+
+
+def li_request(method, path, body=None, raw=None, url=None, headers=None, timeout=120):
+    """Aufruf der LinkedIn-REST-API. Gibt (JSON-Antwort, Header) zurück."""
+    h = {"Authorization": f"Bearer {li_token()}", "LinkedIn-Version": li_version(),
+         "X-Restli-Protocol-Version": "2.0.0"}
+    data = raw
+    if body is not None:
+        data = json.dumps(body).encode()
+        h["Content-Type"] = "application/json"
+    if url:  # Upload-Adressen: eigener Header-Satz
+        h = {"Authorization": f"Bearer {li_token()}", "Content-Type": "application/octet-stream"}
+    h.update(headers or {})
+    req = urllib.request.Request(url or f"https://api.linkedin.com/rest/{path}", data=data, method=method, headers=h)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            text = r.read()
+            return (json.loads(text) if text.strip() else {}), r.headers
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"LinkedIn {path or 'Upload'}: {e.code} {e.read().decode(errors='replace')[:600]}")
+
+
+def li_wanted(post):
+    if "linkedin" in post:
+        return bool(post["linkedin"])
+    return post.get("category") in LI_CATEGORIES or post.get("type") == "reel"
+
+
+def li_caption(post, caption):
+    """Instagram-Text für LinkedIn anpassen: klickbarer Link, max. 3 Hashtags, Sonderzeichen maskiert."""
+    text = post.get("linkedin_caption") or caption
+    text = text.replace("taxi-akbulut.de (Link im Profil)", "https://taxi-akbulut.de")
+    text = text.replace(" (Link im Profil)", "")
+    paras = text.rstrip().split("\n\n")
+    last = paras[-1].split()
+    if last and all(w.startswith("#") for w in last):
+        paras[-1] = " ".join(last[:3])
+    text = "\n\n".join(paras)
+    out, i = [], 0
+    while i < len(text):
+        c = text[i]
+        if c == "#" and i + 1 < len(text) and (text[i + 1].isalnum()) and (i == 0 or text[i - 1].isspace()):
+            j = i + 1
+            while j < len(text) and (text[j].isalnum() or text[j] == "_"):
+                j += 1
+            tag = "".join("\\" + ch if ch in LI_RESERVED else ch for ch in text[i + 1:j])
+            out.append("{hashtag|\\#|" + tag + "}")
+            i = j
+            continue
+        out.append("\\" + c if c in LI_RESERVED else c)
+        i += 1
+    return "".join(out)[:3000]
+
+
+def li_upload_image(path):
+    res, _ = li_request("POST", "images?action=initializeUpload",
+                        body={"initializeUploadRequest": {"owner": LI_ORG}})
+    v = res["value"]
+    with open(path, "rb") as f:
+        li_request("PUT", "", raw=f.read(), url=v["uploadUrl"])
+    return v["image"]
+
+
+def li_upload_video(path):
+    size = os.path.getsize(path)
+    res, _ = li_request("POST", "videos?action=initializeUpload",
+                        body={"initializeUploadRequest": {"owner": LI_ORG, "fileSizeBytes": size,
+                                                          "uploadCaptions": False, "uploadThumbnail": False}})
+    v = res["value"]
+    etags = []
+    with open(path, "rb") as f:
+        for part in v["uploadInstructions"]:
+            f.seek(part["firstByte"])
+            chunk = f.read(part["lastByte"] - part["firstByte"] + 1)
+            _, hdr = li_request("PUT", "", raw=chunk, url=part["uploadUrl"], timeout=600)
+            etags.append(hdr.get("ETag", "").strip('"'))
+    li_request("POST", "videos?action=finalizeUpload",
+               body={"finalizeUploadRequest": {"video": v["video"], "uploadToken": v.get("uploadToken", ""),
+                                               "uploadedPartIds": etags}})
+    urn = urllib.parse.quote(v["video"], safe="")
+    for _ in range(60):  # bis zu ca. 6 Minuten auf die Verarbeitung warten
+        info, _ = li_request("GET", f"videos/{urn}")
+        status = info.get("status")
+        if status == "AVAILABLE":
+            break
+        if status == "PROCESSING_FAILED":
+            raise RuntimeError(f"LinkedIn-Video: Verarbeitung fehlgeschlagen {info.get('processingFailureReason', '')}")
+        time.sleep(6)
+    return v["video"]
+
+
+def publish_linkedin(post, caption):
+    is_video = post.get("type") == "reel"
+    if is_video:
+        media = {"id": li_upload_video(post["video"]), "title": post.get("yt_title") or post.get("motiv", "Video")}
+    else:
+        media = {"id": li_upload_image(post["image"]), "altText": post.get("alt_text", "")[:4086]}
+    body = {"author": LI_ORG, "commentary": li_caption(post, caption), "visibility": "PUBLIC",
+            "distribution": {"feedDistribution": "MAIN_FEED", "targetEntities": [], "thirdPartyDistributionChannels": []},
+            "content": {"media": media}, "lifecycleState": "PUBLISHED", "isReshareDisabledByAuthor": False}
+    _, hdr = li_request("POST", "posts", body=body)
+    return hdr.get("x-restli-id") or hdr.get("x-linkedin-id") or "ok"
+
+
 def check_access():
     """Testlauf: prüft Secrets und Berechtigungen, ohne etwas zu veröffentlichen."""
     lines = [f"Testlauf {dt.datetime.now(TZ).isoformat(timespec='minutes')}"]
@@ -379,6 +531,22 @@ def check_access():
             lines.append(f"FEHLER YouTube: {str(e)[:400]}")
     else:
         lines.append("HINWEIS YouTube nicht eingerichtet (Secrets YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN fehlen)")
+    if LI_ENABLED:
+        try:
+            st = {}
+            li_token(st)
+            lines.append(f"OK LinkedIn-Zugang gültig (API-Version {li_version()})"
+                         + (f", Refresh-Token gültig bis {st['linkedin_refresh_token_expires']}"
+                            if st.get("linkedin_refresh_token_expires") else ""))
+            try:
+                org, _ = li_request("GET", f"organizations/{LI_ORG_ID}")
+                lines.append(f"OK LinkedIn-Seite erreichbar: {org.get('localizedName', LI_ORG_ID)}")
+            except Exception as e:  # noqa: BLE001
+                lines.append(f"HINWEIS LinkedIn-Seitenname nicht abrufbar (Posten kann trotzdem gehen): {str(e)[:200]}")
+        except Exception as e:  # noqa: BLE001
+            lines.append(f"FEHLER LinkedIn: {str(e)[:400]}")
+    else:
+        lines.append("HINWEIS LinkedIn nicht eingerichtet (Secrets LINKEDIN_ORG_ID und Zugang fehlen)")
     print("\n".join(lines))
     with open("testlauf.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
@@ -436,6 +604,18 @@ def _fetch_video(url, target):
             print(f"Video geladen: {target} ({os.path.getsize(target)} Bytes)")
         except Exception as e:  # noqa: BLE001
             print(f"Video konnte nicht geladen werden ({target}): {e}")
+
+
+def li_publish_step(post, path, caption, state):
+    """LinkedIn zuletzt; ein LinkedIn-Fehler stoppt die anderen Kanäle nicht."""
+    if not (LI_ENABLED and li_wanted(post)) or post.get("linkedin_id") or post.get("linkedin_error"):
+        return
+    try:
+        li_token(state)
+        post["linkedin_id"] = publish_linkedin(post, caption)
+    except Exception as e:  # noqa: BLE001
+        post["linkedin_error"] = str(e)[:500]
+    save_json(path, post)
 
 
 def main():
@@ -509,6 +689,7 @@ def main():
                     except Exception as e:  # noqa: BLE001
                         post["youtube_landscape_error"] = str(e)[:500]
                     save_json(path, post)
+                li_publish_step(post, path, caption, state)
             else:
                 image_url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{post['image']}"
                 if post.get("instagram", True) and not post.get("instagram_id"):
@@ -526,6 +707,7 @@ def main():
                 if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
                     post["facebook_id"] = publish_facebook(image_url, caption)
                     save_json(path, post)
+                li_publish_step(post, path, caption, state)
             post.update(published_at=now.isoformat(timespec="minutes"))
             post.pop("last_error", None)
             os.makedirs("published", exist_ok=True)
@@ -534,6 +716,12 @@ def main():
             state[lane_key] = today
             save_json(STATE_FILE, state)
             print(f"Veröffentlicht: {path}")
+            if post.get("linkedin_error") and not post.get("linkedin_error_reported"):
+                # Instagram/Facebook sind raus; der rote Lauf meldet nur den LinkedIn-Fehler (kein erneutes Posten).
+                post["linkedin_error_reported"] = True
+                save_json(os.path.join("published", os.path.basename(path)), post)
+                print(f"FEHLER LinkedIn ({post.get('motiv', path)}): {post['linkedin_error']}")
+                sys.exit(1)
         except Exception as e:  # noqa: BLE001
             post["attempts"] = post.get("attempts", 0) + 1
             post["last_error"] = str(e)[:1000]
