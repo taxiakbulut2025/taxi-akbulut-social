@@ -1,6 +1,6 @@
 # Taxi Akbulut – Social-Autopilot
 
-Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook, 5× pro Woche nach Themen-Tagen (Mo Taxi Tübingen, Di Krankenfahrten, Mi Flughafen, Do Ferntaxi, Fr Event-Shuttle/Medizinkurier im Wechsel, jeweils 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
+Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook (ausgewählte Themen auch auf der LinkedIn-Unternehmensseite), 5× pro Woche nach Themen-Tagen (Mo Taxi Tübingen, Di Krankenfahrten, Mi Flughafen, Do Ferntaxi, Fr Event-Shuttle/Medizinkurier im Wechsel, jeweils 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
 Kostenlos: GitHub Actions veröffentlicht, Claude füllt jede Woche die Warteschlange mit neuen Bildern.
 
 ```
@@ -62,3 +62,44 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
 - **Fehler:** GitHub schickt dir automatisch eine E-Mail, wenn ein Lauf fehlschlägt.
 - Die erste Planung startet am **Sonntag, 11.10.2026, 9:00 Uhr**, ab 12.10. Mo–Fr 18:00 nach Themen-Tagen und Sa 11:00 (Reel). Liegt die Einrichtung später, werden überfällige Posts
   einzeln nachgeholt – einer pro Tag.
+
+## LinkedIn-Unternehmensseite (optional, kostenlos)
+
+Solange die LinkedIn-Secrets fehlen, wird LinkedIn einfach übersprungen.
+
+**Was gepostet wird:** Chauffeurservice, Ferntaxi, Flughafen, Medizinkurier, Event-Shuttle und Reels.
+Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
+sonst wird der Instagram-Text angepasst (klickbarer Link statt „Link im Profil“, höchstens 3 Hashtags).
+
+### 1. App anlegen und Zugang beantragen
+1. Als Admin der LinkedIn-Seite von Taxi Akbulut auf **developers.linkedin.com** → **Create app**.
+   - App-Name z. B. „Taxi Akbulut Autopilot“, als **LinkedIn Page** die Taxi-Akbulut-Seite wählen, Logo hochladen.
+2. Im Reiter **Settings** → „Verify“ klicken und den Link als Seiten-Admin bestätigen.
+3. Im Reiter **Products** → **Community Management API** → „Request access“.
+   Formular ehrlich ausfüllen: *„Eigene Unternehmensseite: automatisches Veröffentlichen unserer eigenen Werbebeiträge
+   (Bilder und Videos) eines Taxi- und Chauffeurunternehmens. Kein Zugriff auf fremde Seiten oder Mitgliederdaten.“*
+   Firmenangaben (Adresse, Website, ggf. Handelsregister) bereithalten.
+   - Wichtig: Die App darf **keine anderen Produkte** haben (z. B. nicht „Sign In with LinkedIn“), sonst lehnt LinkedIn ab.
+   - Die Prüfung dauert meist einige Tage bis Wochen. Die Antwort kommt per E-Mail.
+
+### 2. Zugangsschlüssel erzeugen (nach der Freigabe)
+1. Im Reiter **Auth**: **Client ID** und **Primary Client Secret** kopieren.
+2. Unter **Auth** → „OAuth 2.0 tools“ → **Create token** → Berechtigung **`w_organization_social`** anhaken
+   (falls angeboten auch `r_organization_social`) → mit dem Admin-Konto bestätigen.
+3. Es erscheinen ein **Access token** und – wenn LinkedIn es für die App freigibt – ein **Refresh token**.
+4. **Organisations-ID:** Seite als Admin öffnen; die Zahl in der Adresse `linkedin.com/company/12345678/admin/` ist die ID.
+
+> Schlüssel niemals per E-Mail, WhatsApp oder in den Chat schicken – nur in die GitHub-Secrets.
+
+### 3. GitHub-Secrets anlegen
+Repository → Settings → Secrets and variables → Actions → New repository secret:
+- `LINKEDIN_ORG_ID` – die Zahl aus Schritt 2.4
+- mit Refresh-Token (empfohlen, läuft ca. 1 Jahr): `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET`, `LINKEDIN_REFRESH_TOKEN`
+- ohne Refresh-Token: `LINKEDIN_ACCESS_TOKEN` (läuft nach ca. 60 Tagen ab und muss dann neu erzeugt werden)
+
+Test: Actions → „Social-Autopilot“ → Run workflow mit dry_run. In `testlauf.txt` steht dann „OK LinkedIn-Zugang gültig“
+und, falls vorhanden, bis wann der Refresh-Token gilt (auch in `state.json` unter `linkedin_refresh_token_expires`).
+
+**Fehler:** Ein LinkedIn-Fehler hält Instagram/Facebook nicht auf. Der Lauf wird danach rot markiert (E-Mail von GitHub),
+der Post wird aber nicht doppelt veröffentlicht. Fehlertext steht in `published/<post>.json` unter `linkedin_error`.
+

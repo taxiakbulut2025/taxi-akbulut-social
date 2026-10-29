@@ -1,6 +1,8 @@
-Testlauf 2026-10-20T15:00+02:00
+Testlauf 2026-10-29T10:56+01:00
 OK Instagram erreichbar: @taxiakbulut
 OK Posting-Berechtigung, Kontingent: [{'quota_usage': 2}]
 OK Facebook-Seite erreichbar: Taxi Akbulut Tübingen
 OK Standort-Markierung möglich: Taxi Akbulut Tübingen {'city': 'Tübingen', 'country': 'Germany', 'latitude': 48.522712996953, 'longitude': 9.058318734169, 'street': 'Schwärzlocher Str. 37', 'zip': '72070'}
 OK YouTube-Kanal erreichbar: Taxi Akbulut Tübingen 
+OK LinkedIn-Zugang gültig (API-Version 202607), Refresh-Token gültig bis 2027-10-28
+OK LinkedIn-Seite erreichbar: Taxi Akbulut Tübingen
