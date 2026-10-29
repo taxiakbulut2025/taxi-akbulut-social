@@ -67,8 +67,9 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
 
 Solange die LinkedIn-Secrets fehlen, wird LinkedIn einfach übersprungen.
 
-**Was gepostet wird:** nur Geschäftsfahrten – Chauffeurservice, Ferntaxi, Flughafen, Event-Shuttle.
-Reels nur mit `"linkedin": true` im Post (wenn sie eines dieser Themen haben). Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
+**Was gepostet wird:** Flughafen, Event-Shuttle und Ferntaxi aus dem normalen Plan, dazu eine eigene LinkedIn-Spur
+(Mo/Mi/Fr 08:00 Medizinkurier, 19:00 Chauffeurservice V-Klasse; Details in `redaktion/REDAKTION.md`).
+Reels nur mit `"linkedin": true` im Post. Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
 sonst wird der Instagram-Text angepasst (klickbarer Link statt „Link im Profil“, höchstens 3 Hashtags).
 
 ### 1. App anlegen und Zugang beantragen

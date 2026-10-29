@@ -1,2 +1,1 @@
-{ "name": "akbulut-social-generator", "private": true,
-  "dependencies": { "@sparticuz/chromium": "153.0.0", "puppeteer-core": "25.13.0", "@fontsource/archivo": "5.3.0" } }
+{"name":"akbulut-social-generator","private":true,"dependencies":{"@fontsource/archivo":"5.3.0","@fontsource/roboto":"^5.3.0","@sparticuz/chromium":"153.0.0","puppeteer-core":"25.13.0"}}

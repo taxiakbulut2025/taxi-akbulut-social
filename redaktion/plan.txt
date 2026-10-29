@@ -102,3 +102,23 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2027-03-05 18:00 Fr | event-shuttle   | e10-gaeste-von-ausserhalb
 2027-03-12 18:00 Fr | medizinkurier   | m09-aus-tuebingen
 2027-03-19 18:00 Fr | medizinkurier   | m10-vertrauen
+
+LinkedIn-Spur (nur LinkedIn, Mo/Mi/Fr; 08:00 Medizinkurier, 19:00 V-Klasse Chauffeur)
+2026-11-02 08:00  li-morgen  li-m11-kuehlschrank-kuehlbox
+2026-11-02 19:00  li-abend   li-v01-raum-fuer-den-termin
+2026-11-04 08:00  li-morgen  li-m12-praxen-labore-kliniken
+2026-11-04 19:00  li-abend   li-v02-sieben-plaetze
+2026-11-06 08:00  li-morgen  li-m13-sie-bestimmen-den-takt
+2026-11-06 19:00  li-abend   li-v03-gate-meeting
+2026-11-09 08:00  li-morgen  li-m14-abgeholt-gekuehlt-uebergeben
+2026-11-09 19:00  li-abend   li-v04-messe-stuttgart
+2026-11-11 08:00  li-morgen  li-m15-kein-kofferraum
+2026-11-11 19:00  li-abend   li-v05-puenktlich-garantie
+2026-11-13 08:00  li-morgen  li-m16-zwei-frachten
+2026-11-13 19:00  li-abend   li-v06-preis-vorab
+2026-11-16 08:00  li-morgen  li-m17-so-fangen-wir-an
+2026-11-16 19:00  li-abend   li-v07-zwei-modelle
+2026-11-18 08:00  li-morgen  li-m18-inhaber-fahren
+2026-11-18 19:00  li-abend   li-v08-gaeste-empfangen
+2026-11-20 08:00  li-morgen  li-m19-proben-in-der-box
+2026-11-20 19:00  li-abend   li-v09-drei-staedte

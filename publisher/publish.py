@@ -357,7 +357,7 @@ LI_ENABLED = bool(LI_ORG_ID and (LI_ACCESS_TOKEN or (LI_CLIENT_ID and LI_CLIENT_
 LI_ORG = f"urn:li:organization:{LI_ORG_ID}"
 # LinkedIn nur für Geschäftsfahrten: diese Themen gehen automatisch mit.
 # Reels und alle anderen Themen nur mit "linkedin": true im Post; "linkedin": false schließt aus.
-LI_CATEGORIES = {"chauffeurservice", "ferntaxi", "flughafen", "event-shuttle"}
+LI_CATEGORIES = {"ferntaxi", "flughafen", "event-shuttle"}  # Chauffeur nur V-Klasse über die LinkedIn-Spur
 LI_RESERVED = set("\\|{}@[]()<>#*_~")
 _LI_TOKEN = None
 
@@ -610,6 +610,12 @@ def _fetch_video(url, target):
 def li_publish_step(post, path, caption, state):
     """LinkedIn zuletzt; ein LinkedIn-Fehler stoppt die anderen Kanäle nicht."""
     if not (LI_ENABLED and li_wanted(post)) or post.get("linkedin_id") or post.get("linkedin_error"):
+        return
+    if not post.get("instagram", True) and not post.get("facebook", True):
+        # Reiner LinkedIn-Post: Fehler zählt als echter Fehlversuch (bis zu 3 Versuche, dann failed/).
+        li_token(state)
+        post["linkedin_id"] = publish_linkedin(post, caption)
+        save_json(path, post)
         return
     try:
         li_token(state)

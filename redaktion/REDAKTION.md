@@ -15,11 +15,19 @@
 - Kein Motiv wiederholen, das in `queue/` oder `published/` schon vorkommt (Feld `motiv`, Überschrift).
 - Übersicht aller Termine: `redaktion/plan.txt` – nach jeder Änderung aktualisieren.
 
-## LinkedIn-Unternehmensseite (seit 29.10.2026)
-- Auf LinkedIn nur Geschäftsfahrten: Flughafentransfer (`flughafen`), Chauffeurservice (`chauffeurservice`), Event-Shuttle (`event-shuttle`), Ferntaxi (`ferntaxi`). Diese gehen automatisch mit.
-- Nie auf LinkedIn: Taxi Tübingen, Krankenfahrten, Medizinkurier, reine Stories.
-- Reels nur, wenn ihr Thema eines der vier Geschäftsthemen ist: dann im Queue-Eintrag `"linkedin": true` setzen, sonst weglassen.
-- Optional eigener Text mit `"linkedin_caption"`; sonst wird der Instagram-Text automatisch angepasst (klickbarer Link, max. 3 Hashtags).
+## LinkedIn-Unternehmensseite (seit 29.10.2026, Vorgabe Yasin)
+- Automatisch mitgespiegelt aus dem Haupt-Plan: nur Flughafen (`flughafen`), Event-Shuttle (`event-shuttle`), Ferntaxi (`ferntaxi`).
+- Nie gespiegelt: Taxi Tübingen, Krankenfahrten, Medizinkurier- und Chauffeur-Posts des Haupt-Plans, reine Stories.
+- Reels nur mit `"linkedin": true`, und nur, wenn sie die Mercedes-Benz V-Klasse (Chauffeurservice) oder Flughafen/Event-Shuttle/Ferntaxi zeigen.
+- **Eigene LinkedIn-Spur – nur LinkedIn, Mo/Mi/Fr:**
+  - `"lane": "li-morgen"`, 08:00 – Medizinischer Kurierdienst, Taxi-Akbulut-Stil (Archivo, Elfenbein/Schwarz/Gelb rotierend), mit Linien-Icon, Fuß „Kurier anfragen | taxi-akbulut.de".
+  - `"lane": "li-abend"`, 19:00 – Chauffeurservice NUR Mercedes-Benz V-Klasse (Luxus-Liner 4 Sitze / Business Liner bis 7), Markenstil „AKBULUT. Chauffeur Service" mit Wortmarke `vorlagen/brand/akbulut-chauffeur-wortmarke-dunkel.png`, Gold #C9A227/Schwarz, Roboto, goldenes Linien-Icon. Keine E-Klasse.
+  - Vorlage: `vorlagen/linkedin_build.py` (Funktionen `med(...)` und `vframe(...)`, Icons in `I` und `V`), Serien `li-m11…` und `li-v01…` fortsetzen. Rendern: `python3 vorlagen/linkedin_build.py && python3 generator/render_li.py motive/<slug>.html images/<datum>-<slug>.jpg`.
+  - Queue-Eintrag: `"instagram": false, "facebook": false, "linkedin": true`, keine Story; Kategorie `medizinkurier` bzw. `chauffeurservice`.
+  - Text direkt für LinkedIn: 40–110 Wörter, Sie-Form, sachlich für Geschäftskunden; Schluss mit SEO-Satz und klickbarem Link `https://taxi-akbulut.de` (kein „Link im Profil"); genau 3 Hashtags.
+    Medizin-Schluss: „Medizinischer Kurierdienst in Tübingen: Blutproben- und Medikamententransport für Praxen, Labore und Kliniken. Konditionen auf Anfrage: https://taxi-akbulut.de"
+    V-Klasse-Schluss: „Exklusiver Chauffeurservice in Tübingen, Reutlingen und Stuttgart: Mercedes-Benz V-Klasse mit Fahrer, auf Vorbestellung. Online buchen: https://taxi-akbulut.de"
+  - Puffer: mindestens 3 Termine je Spur im Voraus.
 
 ## Zusatz-Spuren (seit 20.10.2026)
 - Neben dem Haupt-Post (1 pro Tag) gibt es eigene Spuren mit je höchstens 1 Post pro Tag: `"lane": "story"` (reine Story, `"type": "story"`, nur `story_image`, kein Text, optional `"user_tags": ["benutzername"]`) und `"lane": "extra"` (Zusatz-Beitrag, z. B. Reel um 12:30).
