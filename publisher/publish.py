@@ -355,8 +355,9 @@ LI_ACCESS_TOKEN = os.environ.get("LINKEDIN_ACCESS_TOKEN", "")
 LI_ORG_ID = os.environ.get("LINKEDIN_ORG_ID", "").strip()
 LI_ENABLED = bool(LI_ORG_ID and (LI_ACCESS_TOKEN or (LI_CLIENT_ID and LI_CLIENT_SECRET and LI_REFRESH_TOKEN)))
 LI_ORG = f"urn:li:organization:{LI_ORG_ID}"
-# Diese Themen gehen standardmäßig auch auf LinkedIn; "linkedin": true/false im Post überschreibt das.
-LI_CATEGORIES = {"chauffeurservice", "ferntaxi", "flughafen", "medizinkurier", "event-shuttle", "reel"}
+# LinkedIn nur für Geschäftsfahrten: diese Themen gehen automatisch mit.
+# Reels und alle anderen Themen nur mit "linkedin": true im Post; "linkedin": false schließt aus.
+LI_CATEGORIES = {"chauffeurservice", "ferntaxi", "flughafen", "event-shuttle"}
 LI_RESERVED = set("\\|{}@[]()<>#*_~")
 _LI_TOKEN = None
 
@@ -418,7 +419,7 @@ def li_request(method, path, body=None, raw=None, url=None, headers=None, timeou
 def li_wanted(post):
     if "linkedin" in post:
         return bool(post["linkedin"])
-    return post.get("category") in LI_CATEGORIES or post.get("type") == "reel"
+    return post.get("category") in LI_CATEGORIES
 
 
 def li_caption(post, caption):

@@ -1,6 +1,6 @@
 # Taxi Akbulut – Social-Autopilot
 
-Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook (ausgewählte Themen auch auf der LinkedIn-Unternehmensseite), 5× pro Woche nach Themen-Tagen (Mo Taxi Tübingen, Di Krankenfahrten, Mi Flughafen, Do Ferntaxi, Fr Event-Shuttle/Medizinkurier im Wechsel, jeweils 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
+Postet automatisch Werbebilder auf Instagram (Feed + Story) und Facebook (Geschäftsfahrten auch auf der LinkedIn-Unternehmensseite), 5× pro Woche nach Themen-Tagen (Mo Taxi Tübingen, Di Krankenfahrten, Mi Flughafen, Do Ferntaxi, Fr Event-Shuttle/Medizinkurier im Wechsel, jeweils 18:00), plus 1 Reel mit eigener Musik pro Woche (Sa 11:00).
 Kostenlos: GitHub Actions veröffentlicht, Claude füllt jede Woche die Warteschlange mit neuen Bildern.
 
 ```
@@ -67,8 +67,8 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
 
 Solange die LinkedIn-Secrets fehlen, wird LinkedIn einfach übersprungen.
 
-**Was gepostet wird:** Chauffeurservice, Ferntaxi, Flughafen, Medizinkurier, Event-Shuttle und Reels.
-Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
+**Was gepostet wird:** nur Geschäftsfahrten – Chauffeurservice, Ferntaxi, Flughafen, Event-Shuttle.
+Reels nur mit `"linkedin": true` im Post (wenn sie eines dieser Themen haben). Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
 sonst wird der Instagram-Text angepasst (klickbarer Link statt „Link im Profil“, höchstens 3 Hashtags).
 
 ### 1. App anlegen und Zugang beantragen

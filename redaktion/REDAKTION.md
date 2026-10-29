@@ -15,6 +15,12 @@
 - Kein Motiv wiederholen, das in `queue/` oder `published/` schon vorkommt (Feld `motiv`, Überschrift).
 - Übersicht aller Termine: `redaktion/plan.txt` – nach jeder Änderung aktualisieren.
 
+## LinkedIn-Unternehmensseite (seit 29.10.2026)
+- Auf LinkedIn nur Geschäftsfahrten: Flughafentransfer (`flughafen`), Chauffeurservice (`chauffeurservice`), Event-Shuttle (`event-shuttle`), Ferntaxi (`ferntaxi`). Diese gehen automatisch mit.
+- Nie auf LinkedIn: Taxi Tübingen, Krankenfahrten, Medizinkurier, reine Stories.
+- Reels nur, wenn ihr Thema eines der vier Geschäftsthemen ist: dann im Queue-Eintrag `"linkedin": true` setzen, sonst weglassen.
+- Optional eigener Text mit `"linkedin_caption"`; sonst wird der Instagram-Text automatisch angepasst (klickbarer Link, max. 3 Hashtags).
+
 ## Zusatz-Spuren (seit 20.10.2026)
 - Neben dem Haupt-Post (1 pro Tag) gibt es eigene Spuren mit je höchstens 1 Post pro Tag: `"lane": "story"` (reine Story, `"type": "story"`, nur `story_image`, kein Text, optional `"user_tags": ["benutzername"]`) und `"lane": "extra"` (Zusatz-Beitrag, z. B. Reel um 12:30).
 - Einsatz: Bekanntmachung des exklusiven Chauffeurservice (Stories 12:00/13:00 im Markenstil AKBULUT.). Partner Fahrservice Legion auf Instagram: @dielegion.
