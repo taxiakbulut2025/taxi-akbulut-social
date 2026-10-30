@@ -72,6 +72,11 @@ Solange die LinkedIn-Secrets fehlen, wird LinkedIn einfach übersprungen.
 Reels nur mit `"linkedin": true` im Post. Pro Post änderbar mit `"linkedin": true` oder `false`. Eigener LinkedIn-Text optional mit `"linkedin_caption"`;
 sonst wird der Instagram-Text angepasst (klickbarer Link statt „Link im Profil“, höchstens 3 Hashtags).
 
+**Link-Kommentar:** Direkt nach jedem LinkedIn-Post kommentiert die Seite selbst einen passenden Link zur Website
+(z. B. Ferntaxi → `taxi-akbulut.de/ferntaxi`; Zuordnung in `LI_COMMENTS` in `publisher/publish.py`).
+Pro Post änderbar mit `"linkedin_comment": "eigener Text"` oder `false` (kein Kommentar). Ein Kommentar-Fehler
+löscht den Post nicht und postet nichts doppelt; der Lauf wird einmal rot, Fehlertext unter `linkedin_comment_error`.
+
 ### 1. App anlegen und Zugang beantragen
 1. Als Admin der LinkedIn-Seite von Taxi Akbulut auf **developers.linkedin.com** → **Create app**.
    - App-Name z. B. „Taxi Akbulut Autopilot“, als **LinkedIn Page** die Taxi-Akbulut-Seite wählen, Logo hochladen.

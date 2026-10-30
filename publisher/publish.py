@@ -498,6 +498,55 @@ def publish_linkedin(post, caption):
     return hdr.get("x-restli-id") or hdr.get("x-linkedin-id") or "ok"
 
 
+# Erster Kommentar unter jedem LinkedIn-Post: passender Link zur Website.
+# Pro Post änderbar mit "linkedin_comment": "eigener Text" oder false (kein Kommentar).
+LI_COMMENTS = {
+    "ferntaxi": "Jetzt Ferntaxi buchen: https://www.taxi-akbulut.de/ferntaxi",
+    "flughafen": "Jetzt Flughafentransfer buchen: https://www.taxi-akbulut.de/flughafentransfer-tuebingen",
+    "event-shuttle": "Event-Shuttle anfragen: https://www.taxi-akbulut.de/event-shuttle-tuebingen",
+    "chauffeurservice": "Chauffeurservice mit der V-Klasse buchen: https://www.taxi-akbulut.de/chauffeur-service-stuttgart",
+    "medizinkurier": "Mehr zum medizinischen Kurierdienst: https://www.taxi-akbulut.de/blut-medikamententransport",
+    "krankenfahrten": "Krankenfahrt buchen: https://www.taxi-akbulut.de/krankenfahrten-tuebingen",
+    "taxi-tuebingen": "Taxi in Tübingen buchen: https://www.taxi-akbulut.de/taxi-tuebingen",
+}
+
+
+def li_comment_text(post):
+    if "linkedin_comment" in post:
+        return post["linkedin_comment"] or ""
+    topic = post.get("category")
+    if topic == "reel" or post.get("type") == "reel":
+        topic = post.get("yt_topic") or topic
+    return LI_COMMENTS.get(topic, "Jetzt online buchen: https://www.taxi-akbulut.de/buchen")
+
+
+def li_comment_step(post, path):
+    """Link-Kommentar unter den eigenen LinkedIn-Post setzen (einmalig, Fehler stoppt nichts)."""
+    urn = post.get("linkedin_id", "")
+    if not (LI_ENABLED and urn.startswith("urn:li:")) or post.get("linkedin_comment_id") \
+            or post.get("linkedin_comment_error"):
+        return
+    text = li_comment_text(post)
+    if not text:
+        return
+    try:
+        _, hdr = li_request("POST", f"socialActions/{urllib.parse.quote(urn, safe='')}/comments",
+                            body={"actor": LI_ORG, "object": urn, "message": {"text": text}})
+        post["linkedin_comment_id"] = hdr.get("x-restli-id") or hdr.get("x-linkedin-id") or "ok"
+        print(f"LinkedIn-Kommentar gesetzt: {text}")
+    except Exception as e:  # noqa: BLE001
+        post["linkedin_comment_error"] = str(e)[:500]
+    save_json(path, post)
+
+
+def report_li_comment_error(post, path):
+    if post.get("linkedin_comment_error") and not post.get("linkedin_comment_error_reported"):
+        post["linkedin_comment_error_reported"] = True
+        save_json(path, post)
+        print(f"FEHLER LinkedIn-Kommentar ({post.get('motiv', path)}): {post['linkedin_comment_error']}")
+        sys.exit(1)
+
+
 def check_access():
     """Testlauf: prüft Secrets und Berechtigungen, ohne etwas zu veröffentlichen."""
     lines = [f"Testlauf {dt.datetime.now(TZ).isoformat(timespec='minutes')}"]
@@ -616,6 +665,7 @@ def li_publish_step(post, path, caption, state):
         li_token(state)
         post["linkedin_id"] = publish_linkedin(post, caption)
         save_json(path, post)
+        li_comment_step(post, path)
         return
     try:
         li_token(state)
@@ -623,6 +673,7 @@ def li_publish_step(post, path, caption, state):
     except Exception as e:  # noqa: BLE001
         post["linkedin_error"] = str(e)[:500]
     save_json(path, post)
+    li_comment_step(post, path)
 
 
 def main():
@@ -729,6 +780,7 @@ def main():
                 save_json(os.path.join("published", os.path.basename(path)), post)
                 print(f"FEHLER LinkedIn ({post.get('motiv', path)}): {post['linkedin_error']}")
                 sys.exit(1)
+            report_li_comment_error(post, os.path.join("published", os.path.basename(path)))
         except Exception as e:  # noqa: BLE001
             post["attempts"] = post.get("attempts", 0) + 1
             post["last_error"] = str(e)[:1000]
