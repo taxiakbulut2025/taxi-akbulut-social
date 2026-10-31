@@ -13,5 +13,13 @@
   "yt_topic": "chauffeurservice",
   "yt_landscape": "reels/2026-10-31-chauffeurservice-16x9.mp4",
   "yt_landscape_title": "Exklusiver Chauffeurservice in Tübingen, Reutlingen & Stuttgart – Mercedes V-Klasse mit Chauffeur",
-  "linkedin": true
+  "linkedin": true,
+  "instagram_id": "17946543579358279",
+  "facebook_id": "2109344589686521",
+  "youtube_id": "oa2mbPT-9Eo",
+  "youtube_landscape_id": "BaptJsD_lGw",
+  "linkedin_id": "urn:li:ugcPost:7522237833298767872",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3AugcPost%3A7522237833298767872/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260701\"}",
+  "published_at": "2026-10-31T11:06+01:00",
+  "linkedin_comment_error_reported": true
 }
