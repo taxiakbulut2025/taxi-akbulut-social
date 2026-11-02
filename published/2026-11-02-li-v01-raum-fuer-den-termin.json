@@ -8,5 +8,9 @@
   "instagram": false,
   "facebook": false,
   "linkedin": true,
-  "motiv": "li-v01-raum-fuer-den-termin"
+  "motiv": "li-v01-raum-fuer-den-termin",
+  "linkedin_id": "urn:li:share:7523114513206759425",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7523114513206759425/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-02T21:11+01:00",
+  "linkedin_comment_error_reported": true
 }
