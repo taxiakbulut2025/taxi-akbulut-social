@@ -27,6 +27,7 @@
   - Text direkt für LinkedIn: 40–110 Wörter, Sie-Form, sachlich für Geschäftskunden; Schluss mit SEO-Satz und klickbarem Link `https://taxi-akbulut.de` (kein „Link im Profil"); genau 3 Hashtags.
     Medizin-Schluss: „Medizinischer Kurierdienst in Tübingen: Blutproben- und Medikamententransport für Praxen, Labore und Kliniken. Konditionen auf Anfrage: https://taxi-akbulut.de"
     V-Klasse-Schluss: „Exklusiver Chauffeurservice in Tübingen, Reutlingen und Stuttgart: Mercedes-Benz V-Klasse mit Fahrer, auf Vorbestellung. Online buchen: https://taxi-akbulut.de"
+  - Ab 11.1.2027 (Vorgabe Yasin, weniger statt Wiederholung): Mo 08:00 Medizin, Mi/Fr 19:00 V-Klasse. Keine Aussage wiederholen; reichen die Fakten nicht, lieber seltener posten und Yasin nach neuen Fakten fragen.
   - Puffer: mindestens 3 Termine je Spur im Voraus.
 
 ## Zusatz-Spuren (seit 20.10.2026)

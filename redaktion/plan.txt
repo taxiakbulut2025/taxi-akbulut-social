@@ -103,8 +103,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2027-03-12 18:00 Fr | medizinkurier   | m09-aus-tuebingen
 2027-03-19 18:00 Fr | medizinkurier   | m10-vertrauen
 
-LinkedIn-Spur (nur LinkedIn, Mo/Mi/Fr; 08:00 Medizinkurier, 19:00 V-Klasse Chauffeur; frei: 25.12., 1.1.)
-2026-11-02 08:00  li-morgen  li-m11-kuehlschrank-kuehlbox
+LinkedIn-Spur (nur LinkedIn; bis 8.1. Mo/Mi/Fr 08:00 Medizin + 19:00 V-Klasse; ab 11.1. Mo 08:00 Medizin, Mi/Fr 19:00 V-Klasse)
 2026-11-02 19:00  li-abend   li-v01-raum-fuer-den-termin
 2026-11-04 08:00  li-morgen  li-m12-praxen-labore-kliniken
 2026-11-04 19:00  li-abend   li-v02-sieben-plaetze
@@ -160,3 +159,21 @@ LinkedIn-Spur (nur LinkedIn, Mo/Mi/Fr; 08:00 Medizinkurier, 19:00 V-Klasse Chauf
 2027-01-06 19:00  li-abend   li-v27-deutschlandweit
 2027-01-08 08:00  li-morgen  li-m38-seit-1986
 2027-01-08 19:00  li-abend   li-v28-zweite-generation
+2027-01-11 08:00  li-morgen  li-m39-steckbrief
+2027-01-13 19:00  li-abend   li-v29-fruehflug-20
+2027-01-15 19:00  li-abend   li-v30-neujahrsempfang
+2027-01-18 08:00  li-morgen  li-m40-neue-praxis
+2027-01-20 19:00  li-abend   li-v31-ohne-taxischild
+2027-01-22 19:00  li-abend   li-v32-15-strecken
+2027-01-25 08:00  li-morgen  li-m41-praxisgemeinschaft
+2027-01-27 19:00  li-abend   li-v33-crew-transfer
+2027-01-29 19:00  li-abend   li-v34-online-schreibtisch
+2027-02-01 08:00  li-morgen  li-m42-praxis-klinik
+2027-02-03 19:00  li-abend   li-v35-firmenjubilaeum
+2027-02-05 19:00  li-abend   li-v36-kartenzahlung
+2027-02-08 08:00  li-morgen  li-m43-einzel-oder-tour
+2027-02-10 19:00  li-abend   li-v37-taxiverband
+2027-02-12 19:00  li-abend   li-v38-hochzeit
+2027-02-15 08:00  li-morgen  li-m44-taxibetrieb
+2027-02-17 19:00  li-abend   li-v39-kindersitz
+2027-02-22 08:00  li-morgen  li-m45-mehrere-standorte

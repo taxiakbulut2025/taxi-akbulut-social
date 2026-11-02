@@ -315,6 +315,52 @@ M.update({
     'li-v28-zweite-generation': vframe('FAMILIENBETRIEB', f'Zweite Generation<br>am Steuer{dot}', 'Seit 1986 fahren wir in Tübingen. Heute führen zwei Brüder den Betrieb und sitzen selbst am Steuer.', 'personen', 92),
 })
 
+# ================================================================ Serie 3 (Jan – Feb 2027): Mo Medizin 08:00, Mi/Fr V-Klasse 19:00
+I.update({
+    'steckbrief': '<rect x="20" y="44" width="160" height="112" rx="10"/><circle cx="64" cy="88" r="18"/><path d="M40 136 Q40 112 64 112 Q88 112 88 136"/>'
+                  '<path d="M108 80 H160 M108 102 H160 M108 124 H144"/>',
+    'tuer': '<rect x="54" y="20" width="92" height="160" rx="4"/><circle cx="126" cy="104" r="7"/><path d="M30 180 H170"/>',
+    'zwei_haeuser': '<path d="M14 100 L56 64 L98 100 V172 H14 Z"/><path d="M102 100 L144 64 L186 100 V172 H102 Z"/><path d="M48 96 V100 M42 130 H70 V172 M136 130 H164 V172"/>'
+                    '<path d="M56 44 V64 M144 44 V64"/>',
+    'praxis_klinik': '<rect x="10" y="80" width="64" height="64" rx="8"/><path d="M42 96 V128 M26 112 H58"/>'
+                     '<path d="M86 112 H118 M106 100 L118 112 L106 124"/>'
+                     '<rect x="128" y="64" width="62" height="96" rx="4"/><path d="M146 92 V132 M172 92 V132 M146 112 H172"/>',
+    'einzel_tour': '<circle cx="40" cy="60" r="14"/><path d="M54 60 H120 M108 48 L120 60 L108 72"/><circle cx="148" cy="60" r="14"/>'
+                   '<circle cx="100" cy="140" r="40"/><path d="M140 140 L150 128 M140 140 L128 132"/>',
+    'auto': '<path d="M20 128 V104 Q22 92 36 88 L60 58 Q66 50 78 50 H130 Q142 50 150 60 L172 88 Q184 92 184 106 V128 Z"/>'
+            '<circle cx="58" cy="132" r="18"/><circle cx="148" cy="132" r="18"/><path d="M66 88 H142"/>',
+    'standorte': '<path d="M40 150 Q100 40 160 150"/><circle cx="40" cy="150" r="14"/><circle cx="100" cy="76" r="14"/><circle cx="160" cy="150" r="14"/>',
+})
+V.update({
+    'laptop': ('<rect x="40" y="44" width="120" height="84" rx="8"/><path d="M20 150 H180 L170 164 H30 Z"/><path d="M78 88 L94 104 L124 72"/>', '0 0 200 200'),
+    'karte': ('<rect x="22" y="50" width="156" height="100" rx="12"/><path d="M22 80 H178"/><path d="M44 120 H92"/>', '0 0 200 200'),
+    'ringe': ('<circle cx="76" cy="112" r="44"/><circle cx="124" cy="112" r="44"/><path d="M64 46 L76 30 L88 46"/>', '0 0 200 200'),
+    'kindersitz': ('<path d="M60 30 Q50 30 52 46 L60 140 Q62 156 78 156 H136 Q150 156 152 142 L154 110"/><path d="M60 100 H120 Q136 100 136 116 V156"/>'
+                   '<path d="M88 52 V100 M112 70 V100"/><path d="M70 172 H150"/>', '0 0 200 200'),
+})
+M.update({
+    'li-m39-steckbrief': med('schwarz', 'Kurierdienst<br>auf einen ' + hl('Blick.', 'schwarz'), '', 'steckbrief', 96,
+        small='Konditionen auf Anfrage.', extra=steps(['Familienbetrieb seit 1986', 'Blutproben, Laborproben, Medikamente', 'Gekühlt in ThermoSecure-Kühlboxen', 'Für Praxen, Labore, Kliniken'], 'schwarz')),
+    'li-m40-neue-praxis': med('hell', 'Neue Praxis?<br>Tour ab Tag eins.', 'Wer eine Praxis eröffnet, plant vieles neu. Den Weg der Proben ins Labor stimmen wir gleich mit Ihnen ab.', 'tuer', 108),
+    'li-m41-praxisgemeinschaft': med('gelb', 'Mehrere Praxen.<br>Eine Tour.', 'In einer Praxisgemeinschaft oder einem Ärztehaus legen wir die Abholpunkte zu einer Tour zusammen. Nach Absprache.', 'zwei_haeuser', 112),
+    'li-m42-praxis-klinik': med('schwarz', 'Von der Praxis<br>in die ' + hl('Klinik.', 'schwarz'), 'Nicht jede Fahrt endet im Labor. Medikamente und Proben bringen wir gekühlt auch zwischen Praxis und Klinik.', 'praxis_klinik', 112),
+    'li-m43-einzel-oder-tour': med('hell', 'Einzelfahrt<br>oder feste Tour.', 'Eine eilige Probe heute oder jede Woche dieselbe Route: Beides fahren wir gekühlt in ThermoSecure-Kühlboxen.', 'einzel_tour', 116),
+    'li-m44-taxibetrieb': med('gelb', 'Ein Taxibetrieb<br>als Kurier.', 'Wir sind seit 1986 in Tübingen und Umgebung unterwegs. Ihre Proben und Medikamente fahren dabei in der Kühlbox mit.', 'auto', 116),
+    'li-m45-mehrere-standorte': med('schwarz', 'Mehrere Standorte.<br>Ein ' + hl('Kurier.', 'schwarz'), 'Für Versorgungszentren und Praxen mit mehreren Standorten planen wir eine Tour über alle Abholpunkte.', 'standorte', 104),
+
+    'li-v29-fruehflug-20': vframe('FRÜHFLUG AB STUTTGART', f'Vor sechs Uhr<br>am Terminal{dot}', 'Von Tübingen zum Flughafen Stuttgart brauchen wir vor 6 Uhr rund 20 Minuten. Werktags ab 6 Uhr planen wir 30 ein.', None, 100, big='20 Min.'),
+    'li-v30-neujahrsempfang': vframe('NEUJAHRSEMPFANG', f'Gäste kommen.<br>Gäste gehen{dot}', 'Für Empfänge und Firmenfeiern fahren wir bis zu 7 Gäste pro Fahrt in der Mercedes-Benz V-Klasse. Den Preis vereinbaren wir vorab.', 'glas', 104),
+    'li-v31-ohne-taxischild': vframe('MIETWAGEN MIT FAHRER', f'Ohne<br>Taxischild{dot}', 'Auf Vorbestellung fahren wir als Mietwagen ohne Taxischild. Den Preis vereinbaren wir vorab, auch innerhalb Tübingens.', 'auto', 116),
+    'li-v32-15-strecken': vframe('FLUGHAFENTRANSFER', f'Festpreise zu<br>Flughäfen{dot}', '15 Festpreisstrecken zu Flughäfen. Wartezeit von 60 Minuten inklusive, Ihren Flug verfolgen wir live.', None, 100, big='15'),
+    'li-v33-crew-transfer': vframe('CREW-TRANSFER', f'Für Cockpit<br>und Kabine{dot}', 'Wir fahren Crew-Transfers für Cockpit- und Kabinenpersonal am Flughafen Stuttgart. In der V-Klasse bis zu 7 Personen.', 'flug', 104),
+    'li-v34-online-schreibtisch': vframe('ONLINE BUCHEN', f'Gebucht am<br>Schreibtisch{dot}', 'Fahrten buchen und bezahlen Sie online auf taxi-akbulut.de. Ändern und stornieren geht im Kundenkonto.', 'laptop', 104),
+    'li-v35-firmenjubilaeum': vframe('FIRMENJUBILÄUM', f'Ein Jahr mehr.<br>Ein Abend lang{dot}', 'Zum Jubiläum holen wir Ihre Gäste ab und bringen sie nach Hause. Bis zu 7 pro Fahrt, größere Gruppen in mehreren Fahrten.', 'stern', 100),
+    'li-v36-kartenzahlung': vframe('BEZAHLEN', f'Karte<br>genügt{dot}', 'Bei uns zahlen Sie mit Karte, auch auf der Kurzstrecke. Oder direkt online bei der Buchung.', 'karte', 116),
+    'li-v37-taxiverband': vframe('TÜBINGER TAXIVERBAND', f'Mitglied<br>vor Ort{dot}', 'Taxi Akbulut ist Mitglied im Tübinger Taxiverband und seit 1986 ein Familienbetrieb in Tübingen.', 'verband', 116),
+    'li-v38-hochzeit': vframe('HOCHZEIT', f'Die Gäste<br>kommen an{dot}', 'Für Hochzeiten fahren wir bis zu 7 Gäste pro Fahrt in der Mercedes-Benz V-Klasse, auf Vorbestellung. Den Preis vereinbaren wir vorab.', 'ringe', 112),
+    'li-v39-kindersitz': vframe('FAMILIE AN BORD', f'Kindersitz<br>auf Wunsch{dot}', 'Reisen Sie mit Kindern, stellen wir Kindersitze auf Wunsch bereit, gegen Aufpreis. In der V-Klasse ist Platz für alle.', 'kindersitz', 108),
+})
+
 if __name__ == '__main__':
     for k, v in M.items():
         open(os.path.join(OUT, k + '.html'), 'w', encoding='utf-8').write(v)
