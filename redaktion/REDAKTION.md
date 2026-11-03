@@ -107,7 +107,7 @@
 
 ## Zwei Instagram-Konten (Vorgabe Yasin, 03.11.2026)
 - **@taxiakbulut** (+ Facebook-Seite Taxi Akbulut Tübingen): Taxi Tübingen, Krankenfahrten, Flughafen, Ferntaxi, Medizinkurier.
-- **@derchauffeuer** (nur Instagram, keine Facebook-Seite): Chauffeurservice (`chauffeurservice`) und Event-Shuttle (`event-shuttle`) – automatisch nach Kategorie.
+- **@derchauffeur** (nur Instagram, keine Facebook-Seite): Chauffeurservice (`chauffeurservice`) und Event-Shuttle (`event-shuttle`) – automatisch nach Kategorie.
 - Reels und reine Stories haben keine dieser Kategorien: Chauffeur-/V-Klasse-Reels und Chauffeur-Stories bekommen `"ig_account": "chauffeur"`, sonst gehen sie auf @taxiakbulut.
 - Chauffeur- und Event-Posts erscheinen NICHT mehr auf @taxiakbulut und nicht auf Facebook. LinkedIn und YouTube bleiben unverändert.
 - Solange das Secret `IG_CHAUFFEUR_TOKEN` fehlt, geht alles wie bisher auf @taxiakbulut.

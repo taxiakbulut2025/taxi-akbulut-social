@@ -40,7 +40,7 @@ STATE_FILE = "state.json"
 MAX_ATTEMPTS = 3
 
 
-# Zweites Instagram-Konto @derchauffeuer (Chauffeurservice + Event-Shuttle), ohne Facebook-Seite,
+# Zweites Instagram-Konto @derchauffeur (Chauffeurservice + Event-Shuttle), ohne Facebook-Seite,
 # angebunden über „Instagram API mit Instagram-Login“ (graph.instagram.com, Token läuft nach 60 Tagen ab).
 IG2_TOKEN = os.environ.get("IG_CHAUFFEUR_TOKEN", "").strip()
 IG2_API = "https://graph.instagram.com/" + os.environ.get("GRAPH_API_VERSION", "v25.0")
@@ -193,7 +193,7 @@ def ig2_id():
 
 
 def account_for(post):
-    """'chauffeur' für @derchauffeuer, sonst 'taxi'. Feld "ig_account" überschreibt die Kategorie-Regel."""
+    """'chauffeur' für @derchauffeur, sonst 'taxi'. Feld "ig_account" überschreibt die Kategorie-Regel."""
     acc = post.get("ig_account") or ("chauffeur" if post.get("category") in IG2_CATEGORIES else "taxi")
     return acc if acc == "chauffeur" and IG2_TOKEN else "taxi"  # ohne Token: wie bisher auf @taxiakbulut
 
@@ -206,7 +206,7 @@ def use_account(name):
 
 
 def ig2_token_check(state):
-    """Verlängert den 60-Tage-Token von @derchauffeuer (höchstens 1x täglich) und merkt sich das Ablaufdatum.
+    """Verlängert den 60-Tage-Token von @derchauffeur (höchstens 1x täglich) und merkt sich das Ablaufdatum.
     Gibt eine Warnung zurück, wenn er in weniger als 10 Tagen abläuft."""
     import hashlib
     if not IG2_TOKEN:
@@ -227,11 +227,11 @@ def ig2_token_check(state):
                 state["ig_chauffeur_token_expires"] = (
                     today + dt.timedelta(seconds=int(r["expires_in"]))).isoformat()
         except Exception as e:  # noqa: BLE001
-            print(f"Hinweis Token-Verlängerung @derchauffeuer: {str(e)[:200]}")
+            print(f"Hinweis Token-Verlängerung @derchauffeur: {str(e)[:200]}")
         save_json(STATE_FILE, state)
     exp = state.get("ig_chauffeur_token_expires")
     if exp and dt.date.fromisoformat(exp) - today < dt.timedelta(days=10):
-        return (f"Instagram-Token für @derchauffeuer läuft am {exp} ab – bitte neu erzeugen und "
+        return (f"Instagram-Token für @derchauffeur läuft am {exp} ab – bitte neu erzeugen und "
                 f"Secret IG_CHAUFFEUR_TOKEN ersetzen.")
     return None
 
@@ -643,9 +643,9 @@ def check_access():
             lim = graph("GET", f"{me['user_id']}/content_publishing_limit", {}, token=IG2_TOKEN, api=IG2_API)
             lines.append(f"OK Posting-Berechtigung @{me.get('username')}, Kontingent: {lim.get('data')}")
         except Exception as e:  # noqa: BLE001
-            lines.append(f"FEHLER Instagram @derchauffeuer: {str(e)[:400]}")
+            lines.append(f"FEHLER Instagram @derchauffeur: {str(e)[:400]}")
     else:
-        lines.append("HINWEIS @derchauffeuer nicht eingerichtet (Secret IG_CHAUFFEUR_TOKEN fehlt) – "
+        lines.append("HINWEIS @derchauffeur nicht eingerichtet (Secret IG_CHAUFFEUR_TOKEN fehlt) – "
                      "Chauffeur-Posts gehen weiter auf @taxiakbulut")
     if YT_ENABLED:
         try:
@@ -794,13 +794,13 @@ def main():
         caption = post.get("caption", "")[:2200]
         acc = account_for(post)
         print(f"Fällig: {path} ({'Reel' if is_reel else 'Story' if is_story else 'Bild'}, Spur {lane}, "
-              f"Instagram {'@derchauffeuer' if acc == 'chauffeur' else '@taxiakbulut'})")
+              f"Instagram {'@derchauffeur' if acc == 'chauffeur' else '@taxiakbulut'})")
         if DRY_RUN:
             print("DRY_RUN – nichts veröffentlicht.\n" + caption)
             return
         try:
             use_account(acc)
-            to_fb = acc == "taxi" and post.get("facebook", True)  # @derchauffeuer hat keine Facebook-Seite
+            to_fb = acc == "taxi" and post.get("facebook", True)  # @derchauffeur hat keine Facebook-Seite
             if acc == "chauffeur":
                 post["ig_account"] = "chauffeur"
             # Bereits erledigte Kanäle (z. B. nach einem Teilfehler) werden nicht doppelt gepostet.
