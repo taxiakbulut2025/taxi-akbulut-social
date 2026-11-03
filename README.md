@@ -63,24 +63,24 @@ Dann im Chat Bescheid sagen – Claude legt den wöchentlichen Auftrag an.
 - Die erste Planung startet am **Sonntag, 11.10.2026, 9:00 Uhr**, ab 12.10. Mo–Fr 18:00 nach Themen-Tagen und Sa 11:00 (Reel). Liegt die Einrichtung später, werden überfällige Posts
   einzeln nachgeholt – einer pro Tag.
 
-## Zweites Instagram-Konto @derchauffeur (Chauffeurservice + Event-Shuttle)
+## Zweites Instagram-Konto @xderchauffeurx (Chauffeurservice + Event-Shuttle)
 
 Posts der Kategorien `chauffeurservice` und `event-shuttle` sowie Reels/Stories mit `"ig_account": "chauffeur"`
-gehen auf @derchauffeur statt auf @taxiakbulut (ohne Facebook). Ohne Secret läuft alles wie bisher.
+gehen auf @xderchauffeurx statt auf @taxiakbulut (ohne Facebook). Ohne Secret läuft alles wie bisher.
 
 Einrichtung (Instagram API mit Instagram-Login, keine Facebook-Seite nötig):
-1. @derchauffeur in der Instagram-App auf **Business-Konto** umstellen (Einstellungen → Kontotyp und Tools).
+1. @xderchauffeurx in der Instagram-App auf **Business-Konto** umstellen (Einstellungen → Kontotyp und Tools).
    Im Profil den Link taxi-akbulut.de eintragen (die Texte verweisen auf „Link im Profil“).
 2. developers.facebook.com → bestehende Meta-App → **Anwendungsfall/Produkt „Instagram“** hinzufügen →
    „API-Einrichtung mit Instagram-Login“.
-3. Dort unter „Zugangsschlüssel generieren“ → **Konto hinzufügen** → mit @derchauffeur anmelden und zustimmen
+3. Dort unter „Zugangsschlüssel generieren“ → **Konto hinzufügen** → mit @xderchauffeurx anmelden und zustimmen
    (Berechtigungen `instagram_business_basic`, `instagram_business_content_publish`).
-   Falls verlangt: unter App-Rollen → Instagram-Tester @derchauffeur einladen und in der Instagram-App unter
+   Falls verlangt: unter App-Rollen → Instagram-Tester @xderchauffeurx einladen und in der Instagram-App unter
    Einstellungen → Apps und Websites → Testereinladungen annehmen.
 4. **Token generieren** und kopieren.
 5. GitHub → Settings → Secrets and variables → Actions → New repository secret: **`IG_CHAUFFEUR_TOKEN`**.
 6. Actions → „Social-Autopilot“ → Run workflow (dry_run). In `testlauf.txt` muss stehen:
-   „OK Zweites Instagram-Konto erreichbar: @derchauffeur“.
+   „OK Zweites Instagram-Konto erreichbar: @xderchauffeurx“.
 
 Der Token gilt 60 Tage. Der Autopilot versucht ihn täglich zu verlängern; das voraussichtliche Ablaufdatum steht in
 `state.json` (`ig_chauffeur_token_expires`). 10 Tage vorher wird der Lauf rot (E-Mail von GitHub) – dann Schritt 4–5
