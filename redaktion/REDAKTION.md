@@ -112,6 +112,24 @@
 - Chauffeur- und Event-Posts erscheinen NICHT mehr auf @taxiakbulut und nicht auf Facebook. LinkedIn und YouTube bleiben unverändert.
 - Solange das Secret `IG_CHAUFFEUR_TOKEN` fehlt, geht alles wie bisher auf @taxiakbulut.
 
+## @xderchauffeurx – Wachstumsplan (Vorgabe Yasin, 03.11.2026)
+- Ziel: Reichweite und neue Follower für den exklusiven Chauffeurservice. Claude betreut das Konto vollständig (automatisch + Wochenbericht).
+- 4 Beiträge pro Woche (dazu Event-Shuttle jeden 2. Freitag):
+  - Di 19:00 Reel – `"lane": "ch"`, `"type": "reel"`, `"category": "reel"`, `"ig_account": "chauffeur"`
+  - Do 19:00 Bild-Post mit Story – `"lane": "ch"`, `"category": "chauffeurservice"`, Markenstil AKBULUT. (chauffeur_build.py)
+  - Sa 11:00 Reel (Haupt-Spur, `"ig_account": "chauffeur"`)
+  - So 18:00 Bild-Post Chauffeurservice (Haupt-Spur)
+- Puffer: je Termin (Di, Do, Sa, So) mindestens 2 Wochen im Voraus.
+- `ch`-Posts: `"linkedin": false` (LinkedIn hat eigene Spur). Feiertage wie oben überspringen.
+- Inhalts-Säulen im Wechsel: Mercedes V-Klasse (Luxus-Liner 4 Sitze / Business Liner bis 7) und E-Klasse · Espresso an Bord · Abholung Flughafen Stuttgart für Geschäftsreisende · Messe/Firmenevent · Familienbetrieb seit 1986, zweite Generation · Region Tübingen/Reutlingen/Stuttgart · Bewertungen (nur exakt laut fakten.md mit Stand).
+- Reels mit Hook in den ersten 1–2 Sekunden (Frage oder starke Aussage im Bild), 7–12 Sekunden, Schluss „Online buchen | taxi-akbulut.de“.
+- **Higgsfield** (KI-Bilder/-Videos): höchstens **200 Credits pro Woche**; Stand und Verbrauch im Wochenbericht nennen.
+  - Referenz: nur eigene Fahrzeugfotos aus den Higgsfield-Medien (oder Fotos von Yasin). Fahrzeug muss der eigenen Mercedes V-Klasse entsprechen.
+  - Nichts zeigen, was fakten.md widerspricht oder dort gesperrt ist (z. B. 7 Personen im Luxus-Liner, WLAN, Getränke außer Espresso, S-Klasse, Kundenlogos, fremde Marken, erkennbare reale Personen).
+  - Jeder KI-Beitrag enthält im Text: „Szenen mit KI inszeniert, mit unserem eigenen Fahrzeug.“
+  - Ton: KI-generierter Ton von Higgsfield oder Musik aus `generator/music.py` – nie fremde Songs.
+  - Video in den Queue-Eintrag über `"video_url"` (Higgsfield-Link) + `"video": "reels/<datum>-<slug>.mp4"`; der Publisher lädt es selbst.
+
 ## Zwei Nischen – klar getrennt (Vorgabe Yasin, 18.10.2026)
 - **Klassisches Taxi:** Taxi Tübingen, Flughafentransfer, Krankenfahrten, Ferntaxi, Medizinkurier.
 - **Exklusiver Chauffeurservice:** Chauffeur-Fahrten, Mercedes V-/E-Klasse mit Fahrer, Event-Shuttle.
