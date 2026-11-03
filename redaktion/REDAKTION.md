@@ -110,6 +110,7 @@
 - **@xderchauffeurx** (nur Instagram, keine Facebook-Seite): Chauffeurservice (`chauffeurservice`) und Event-Shuttle (`event-shuttle`) – automatisch nach Kategorie.
 - Reels und reine Stories haben keine dieser Kategorien: Chauffeur-/V-Klasse-Reels und Chauffeur-Stories bekommen `"ig_account": "chauffeur"`, sonst gehen sie auf @taxiakbulut.
 - Chauffeur- und Event-Posts erscheinen NICHT mehr auf @taxiakbulut und nicht auf Facebook. LinkedIn und YouTube bleiben unverändert.
+- Chauffeur-Reels (Vorgabe Yasin, 03.11.2026): Instagram nur @xderchauffeurx, zusätzlich immer als Short auf den YouTube-Kanal Taxi Akbulut Tübingen (`"youtube"` nicht auf false setzen). Nie auf Instagram @taxiakbulut, nicht auf Facebook.
 - Solange das Secret `IG_CHAUFFEUR_TOKEN` fehlt, geht alles wie bisher auf @taxiakbulut.
 
 ## @xderchauffeurx – Wachstumsplan (Vorgabe Yasin, 03.11.2026)
