@@ -40,10 +40,20 @@ STATE_FILE = "state.json"
 MAX_ATTEMPTS = 3
 
 
-def graph(method, path, params, token=None):
-    params = dict(params, access_token=token or TOKEN)
+# Zweites Instagram-Konto @derchauffeuer (Chauffeurservice + Event-Shuttle), ohne Facebook-Seite,
+# angebunden über „Instagram API mit Instagram-Login“ (graph.instagram.com, Token läuft nach 60 Tagen ab).
+IG2_TOKEN = os.environ.get("IG_CHAUFFEUR_TOKEN", "").strip()
+IG2_API = "https://graph.instagram.com/" + os.environ.get("GRAPH_API_VERSION", "v25.0")
+IG2_CATEGORIES = {"chauffeurservice", "event-shuttle"}
+
+# Aktuelles Ziel-Konto für alle Instagram-Aufrufe (wird je Post umgeschaltet).
+ACC = {"name": "taxi", "api": API, "token": TOKEN, "ig": IG_USER_ID}
+
+
+def graph(method, path, params, token=None, api=None):
+    params = dict(params, access_token=token or ACC["token"])
     data = urllib.parse.urlencode(params).encode()
-    url = f"{API}/{path}"
+    url = f"{api or ACC['api']}/{path}"
     if method == "GET":
         req = urllib.request.Request(url + "?" + data.decode())
     else:
@@ -61,12 +71,12 @@ LOCATION_ID = os.environ.get("LOCATION_ID") or FB_PAGE_ID
 def create_container(params, post):
     """Legt einen Container an – mit Standort-Markierung, falls möglich.
     Lehnt Instagram den Standort ab, wird ohne Standort weitergemacht und der Grund gespeichert."""
-    if LOCATION_ID and not post.get("location_error"):
+    if LOCATION_ID and ACC["name"] == "taxi" and not post.get("location_error"):
         try:
-            return graph("POST", f"{IG_USER_ID}/media", dict(params, location_id=LOCATION_ID))["id"]
+            return graph("POST", f"{ACC['ig']}/media", dict(params, location_id=LOCATION_ID))["id"]
         except RuntimeError as e:
             post["location_error"] = str(e)[:300]
-    return graph("POST", f"{IG_USER_ID}/media", params)["id"]
+    return graph("POST", f"{ACC['ig']}/media", params)["id"]
 
 
 def publish_instagram(image_url, caption, post):
@@ -81,7 +91,7 @@ def publish_instagram(image_url, caption, post):
         if s.get("status_code") == "ERROR":
             raise RuntimeError(f"Instagram-Container fehlerhaft: {s}")
         time.sleep(6)
-    p = graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})
+    p = graph("POST", f"{ACC['ig']}/media_publish", {"creation_id": cid})
     return p["id"]
 
 
@@ -89,7 +99,7 @@ def publish_instagram_story(image_url, usernames=None):
     params = {"image_url": image_url, "media_type": "STORIES"}
     if usernames:
         params["user_tags"] = json.dumps([{"username": u.lstrip("@")} for u in usernames])
-    c = graph("POST", f"{IG_USER_ID}/media", params)
+    c = graph("POST", f"{ACC['ig']}/media", params)
     cid = c["id"]
     for _ in range(20):
         s = graph("GET", cid, {"fields": "status_code"})
@@ -98,7 +108,7 @@ def publish_instagram_story(image_url, usernames=None):
         if s.get("status_code") == "ERROR":
             raise RuntimeError(f"Story-Container fehlerhaft: {s}")
         time.sleep(6)
-    return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
+    return graph("POST", f"{ACC['ig']}/media_publish", {"creation_id": cid})["id"]
 
 
 VERSION = API.rsplit("/", 1)[-1]
@@ -124,14 +134,14 @@ def publish_instagram_reel(video_path, caption, post):
         data = f.read()
     req = urllib.request.Request(
         f"https://rupload.facebook.com/ig-api-upload/{VERSION}/{cid}", data=data, method="POST",
-        headers={"Authorization": f"OAuth {TOKEN}", "offset": "0", "file_size": str(len(data))})
+        headers={"Authorization": f"OAuth {ACC['token']}", "offset": "0", "file_size": str(len(data))})
     try:
         with urllib.request.urlopen(req, timeout=300) as r:
             r.read()
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"Reel-Upload: {e.code} {e.read().decode(errors='replace')}")
     wait_container(cid)
-    return graph("POST", f"{IG_USER_ID}/media_publish", {"creation_id": cid})["id"]
+    return graph("POST", f"{ACC['ig']}/media_publish", {"creation_id": cid})["id"]
 
 
 _PAGE_TOKEN = None
@@ -141,7 +151,8 @@ def page_token():
     """Facebook-Seiten verlangen einen Seiten-Zugangsschlüssel; er wird aus dem Systemnutzer-Token abgeleitet."""
     global _PAGE_TOKEN
     if _PAGE_TOKEN is None:
-        _PAGE_TOKEN = graph("GET", FB_PAGE_ID, {"fields": "access_token"}).get("access_token") or TOKEN
+        _PAGE_TOKEN = graph("GET", FB_PAGE_ID, {"fields": "access_token"},
+                            token=TOKEN, api=API).get("access_token") or TOKEN
     return _PAGE_TOKEN
 
 
@@ -166,8 +177,63 @@ def publish_facebook_video(video_path, caption):
 
 
 def publish_facebook(image_url, caption):
-    p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption}, token=page_token())
+    p = graph("POST", f"{FB_PAGE_ID}/photos", {"url": image_url, "caption": caption},
+              token=page_token(), api=API)
     return p.get("post_id") or p.get("id")
+
+
+_IG2_ID = None
+
+
+def ig2_id():
+    global _IG2_ID
+    if _IG2_ID is None:
+        _IG2_ID = str(graph("GET", "me", {"fields": "user_id,username"}, token=IG2_TOKEN, api=IG2_API)["user_id"])
+    return _IG2_ID
+
+
+def account_for(post):
+    """'chauffeur' für @derchauffeuer, sonst 'taxi'. Feld "ig_account" überschreibt die Kategorie-Regel."""
+    acc = post.get("ig_account") or ("chauffeur" if post.get("category") in IG2_CATEGORIES else "taxi")
+    return acc if acc == "chauffeur" and IG2_TOKEN else "taxi"  # ohne Token: wie bisher auf @taxiakbulut
+
+
+def use_account(name):
+    if name == "chauffeur":
+        ACC.update(name="chauffeur", api=IG2_API, token=IG2_TOKEN, ig=ig2_id())
+    else:
+        ACC.update(name="taxi", api=API, token=TOKEN, ig=IG_USER_ID)
+
+
+def ig2_token_check(state):
+    """Verlängert den 60-Tage-Token von @derchauffeuer (höchstens 1x täglich) und merkt sich das Ablaufdatum.
+    Gibt eine Warnung zurück, wenn er in weniger als 10 Tagen abläuft."""
+    import hashlib
+    if not IG2_TOKEN:
+        return None
+    today = dt.datetime.now(TZ).date()
+    h = hashlib.sha256(IG2_TOKEN.encode()).hexdigest()[:12]
+    if state.get("ig_chauffeur_token_hash") != h:  # neuer Token eingetragen
+        state.update(ig_chauffeur_token_hash=h,
+                     ig_chauffeur_token_expires=(today + dt.timedelta(days=60)).isoformat())
+        state.pop("ig_chauffeur_token_refreshed", None)
+        save_json(STATE_FILE, state)
+    elif state.get("ig_chauffeur_token_refreshed") != today.isoformat():
+        state["ig_chauffeur_token_refreshed"] = today.isoformat()
+        try:
+            r = graph("GET", "refresh_access_token", {"grant_type": "ig_refresh_token"},
+                      token=IG2_TOKEN, api="https://graph.instagram.com")
+            if r.get("access_token") == IG2_TOKEN and r.get("expires_in"):
+                state["ig_chauffeur_token_expires"] = (
+                    today + dt.timedelta(seconds=int(r["expires_in"]))).isoformat()
+        except Exception as e:  # noqa: BLE001
+            print(f"Hinweis Token-Verlängerung @derchauffeuer: {str(e)[:200]}")
+        save_json(STATE_FILE, state)
+    exp = state.get("ig_chauffeur_token_expires")
+    if exp and dt.date.fromisoformat(exp) - today < dt.timedelta(days=10):
+        return (f"Instagram-Token für @derchauffeuer läuft am {exp} ab – bitte neu erzeugen und "
+                f"Secret IG_CHAUFFEUR_TOKEN ersetzen.")
+    return None
 
 
 def load_state():
@@ -569,6 +635,18 @@ def check_access():
                 lines.append(f"HINWEIS Standort nicht prüfbar: {str(e)[:200]}")
     except Exception as e:  # noqa: BLE001
         lines.append(f"FEHLER: {str(e)[:500]}")
+    if IG2_TOKEN:
+        try:
+            me = graph("GET", "me", {"fields": "user_id,username"}, token=IG2_TOKEN, api=IG2_API)
+            lines.append(f"OK Zweites Instagram-Konto erreichbar: @{me.get('username')} "
+                         "(Chauffeurservice + Event-Shuttle)")
+            lim = graph("GET", f"{me['user_id']}/content_publishing_limit", {}, token=IG2_TOKEN, api=IG2_API)
+            lines.append(f"OK Posting-Berechtigung @{me.get('username')}, Kontingent: {lim.get('data')}")
+        except Exception as e:  # noqa: BLE001
+            lines.append(f"FEHLER Instagram @derchauffeuer: {str(e)[:400]}")
+    else:
+        lines.append("HINWEIS @derchauffeuer nicht eingerichtet (Secret IG_CHAUFFEUR_TOKEN fehlt) – "
+                     "Chauffeur-Posts gehen weiter auf @taxiakbulut")
     if YT_ENABLED:
         try:
             tok = yt_token()
@@ -690,6 +768,15 @@ def main():
     today = now.date().isoformat()
     state = load_state()
     blocked = False
+    ig2_warning = None if DRY_RUN else ig2_token_check(state)
+
+    def warn_ig2():
+        """Token-Warnung als roter Lauf (GitHub schickt eine E-Mail), höchstens 1x pro Tag."""
+        if ig2_warning and state.get("ig_chauffeur_warned") != today:
+            state["ig_chauffeur_warned"] = today
+            save_json(STATE_FILE, state)
+            print("FEHLER " + ig2_warning)
+            sys.exit(1)
 
     for path in sorted(glob.glob("queue/*.json")):
         with open(path, encoding="utf-8") as f:
@@ -705,11 +792,17 @@ def main():
         is_reel = post.get("type") == "reel"
         is_story = post.get("type") == "story"
         caption = post.get("caption", "")[:2200]
-        print(f"Fällig: {path} ({'Reel' if is_reel else 'Story' if is_story else 'Bild'}, Spur {lane})")
+        acc = account_for(post)
+        print(f"Fällig: {path} ({'Reel' if is_reel else 'Story' if is_story else 'Bild'}, Spur {lane}, "
+              f"Instagram {'@derchauffeuer' if acc == 'chauffeur' else '@taxiakbulut'})")
         if DRY_RUN:
             print("DRY_RUN – nichts veröffentlicht.\n" + caption)
             return
         try:
+            use_account(acc)
+            to_fb = acc == "taxi" and post.get("facebook", True)  # @derchauffeuer hat keine Facebook-Seite
+            if acc == "chauffeur":
+                post["ig_account"] = "chauffeur"
             # Bereits erledigte Kanäle (z. B. nach einem Teilfehler) werden nicht doppelt gepostet.
             if is_story:
                 if not post.get("story_id"):
@@ -727,7 +820,7 @@ def main():
                 if post.get("instagram", True) and not post.get("instagram_id"):
                     post["instagram_id"] = publish_instagram_reel(post["video"], caption, post)
                     save_json(path, post)
-                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
+                if FB_PAGE_ID and to_fb and not post.get("facebook_id"):
                     post["facebook_id"] = publish_facebook_video(post["video"], caption)
                     save_json(path, post)
                 # YouTube zuletzt; ein YouTube-Fehler stoppt Instagram/Facebook nicht.
@@ -762,7 +855,7 @@ def main():
                     except Exception as e:  # noqa: BLE001 – Story-Fehler stoppt den Feed-Post nicht
                         post["story_error"] = str(e)[:500]
                     save_json(path, post)
-                if FB_PAGE_ID and post.get("facebook", True) and not post.get("facebook_id"):
+                if FB_PAGE_ID and to_fb and not post.get("facebook_id"):
                     post["facebook_id"] = publish_facebook(image_url, caption)
                     save_json(path, post)
                 li_publish_step(post, path, caption, state)
@@ -781,6 +874,7 @@ def main():
                 print(f"FEHLER LinkedIn ({post.get('motiv', path)}): {post['linkedin_error']}")
                 sys.exit(1)
             report_li_comment_error(post, os.path.join("published", os.path.basename(path)))
+            warn_ig2()
         except Exception as e:  # noqa: BLE001
             post["attempts"] = post.get("attempts", 0) + 1
             post["last_error"] = str(e)[:1000]
@@ -792,6 +886,7 @@ def main():
             sys.exit(1)
         return  # höchstens ein Post pro Lauf
     print("Heute wurde bereits gepostet – nichts zu tun." if blocked else "Kein fälliger Post.")
+    warn_ig2()
 
 
 if __name__ == "__main__":
