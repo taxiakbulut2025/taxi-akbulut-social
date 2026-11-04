@@ -6,5 +6,6 @@
   "last_li-morgen_date": "2026-11-02",
   "last_li-abend_date": "2026-11-02",
   "ig_chauffeur_token_hash": "b706a6755fcd",
-  "ig_chauffeur_token_expires": "2027-01-03"
+  "ig_chauffeur_token_expires": "2027-01-03",
+  "ig_chauffeur_token_refreshed": "2026-11-04"
 }
