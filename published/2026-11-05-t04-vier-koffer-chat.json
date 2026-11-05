@@ -8,5 +8,12 @@
   "motiv": "t04-vier-koffer-chat",
   "story": true,
   "story_image": "stories/2026-11-05-t04-vier-koffer-chat.jpg",
-  "alt_text": "Werbebild Taxi Akbulut: „Morgen nach Frankfurt?“ mit Chat zum T-Modell."
+  "alt_text": "Werbebild Taxi Akbulut: „Morgen nach Frankfurt?“ mit Chat zum T-Modell.",
+  "instagram_id": "18128868880939665",
+  "story_id": "18034525856857334",
+  "facebook_id": "265217663586904_1759295836049172",
+  "linkedin_id": "urn:li:share:7524155483474108416",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7524155483474108416/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-05T18:07+01:00",
+  "linkedin_comment_error_reported": true
 }
