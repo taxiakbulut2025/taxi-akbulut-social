@@ -8,5 +8,10 @@
   "instagram": false,
   "facebook": false,
   "linkedin": true,
-  "motiv": "li-v03-gate-meeting"
+  "motiv": "li-v03-gate-meeting",
+  "ig_account": "chauffeur",
+  "linkedin_id": "urn:li:share:7524595956571566080",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7524595956571566080/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-06T23:17+01:00",
+  "linkedin_comment_error_reported": true
 }
