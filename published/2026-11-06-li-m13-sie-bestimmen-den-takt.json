@@ -8,5 +8,9 @@
   "instagram": false,
   "facebook": false,
   "linkedin": true,
-  "motiv": "li-m13-sie-bestimmen-den-takt"
+  "motiv": "li-m13-sie-bestimmen-den-takt",
+  "linkedin_id": "urn:li:share:7524406536773812225",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7524406536773812225/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-06T10:45+01:00",
+  "linkedin_comment_error_reported": true
 }
