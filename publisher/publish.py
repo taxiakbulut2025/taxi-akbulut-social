@@ -126,7 +126,19 @@ def wait_container(cid, tries=100, pause=6):
 
 
 def publish_instagram_reel(video_path, caption, post):
-    """Reel per Direkt-Upload (keine öffentliche Video-URL nötig)."""
+    """Reel per Direkt-Upload (keine öffentliche Video-URL nötig).
+    Ausnahme @xderchauffeurx (Instagram-Login, graph.instagram.com): dort lehnt Instagram den
+    Direkt-Upload ab ("video_url is required") – das Video wird per öffentlicher URL übergeben."""
+    if ACC["name"] == "chauffeur":
+        url = (f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{video_path}"
+               if REPO and os.path.exists(video_path) else post.get("video_url"))
+        if not url:
+            raise RuntimeError(f"Keine öffentliche Video-URL für {video_path}")
+        cid = create_container({
+            "media_type": "REELS", "video_url": url,
+            "caption": caption, "share_to_feed": "true"}, post)
+        wait_container(cid)
+        return graph("POST", f"{ACC['ig']}/media_publish", {"creation_id": cid})["id"]
     cid = create_container({
         "media_type": "REELS", "upload_type": "resumable",
         "caption": caption, "share_to_feed": "true"}, post)
