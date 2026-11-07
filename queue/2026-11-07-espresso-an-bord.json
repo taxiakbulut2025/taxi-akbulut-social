@@ -13,5 +13,7 @@
   "youtube": false,
   "yt_topic": "chauffeurservice",
   "video_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3FJHDWxcEbq7Xz79dUsqoLXr452/e9e177b9-aed1-4794-97a1-01fad067b714.mp4",
-  "linkedin": true
+  "linkedin": true,
+  "attempts": 1,
+  "last_error": "Graph API 17841462310591520/media: 400 {\"error\":{\"message\":\"The parameter video_url is required\",\"type\":\"IGApiException\",\"code\":100,\"fbtrace_id\":\"AHMq48J69aisLC1E13-jUIw\"}}"
 }
