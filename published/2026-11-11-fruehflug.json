@@ -8,5 +8,12 @@
   "motiv": "fruehflug",
   "story": true,
   "story_image": "stories/2026-11-11-fruehflug.jpg",
-  "alt_text": "Werbebild Taxi zum Frühflug: große Uhrzeit 4:30, Text „Uhr? Kein Problem.“"
+  "alt_text": "Werbebild Taxi zum Frühflug: große Uhrzeit 4:30, Text „Uhr? Kein Problem.“",
+  "instagram_id": "18020738732967497",
+  "story_id": "17981301167918456",
+  "facebook_id": "265217663586904_1766318252013597",
+  "linkedin_id": "urn:li:share:7526329653880446978",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7526329653880446978/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-11T18:06+01:00",
+  "linkedin_comment_error_reported": true
 }
