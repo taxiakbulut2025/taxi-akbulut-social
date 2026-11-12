@@ -8,5 +8,12 @@
   "motiv": "s3-ferntaxi",
   "story": true,
   "story_image": "stories/2026-11-12-s3-ferntaxi.jpg",
-  "alt_text": "Werbebild Ferntaxi Tübingen: „Einsteigen. Ankommen.“ mit Strecken Tübingen–München, Tübingen–Frankfurt, Tübingen–Berlin."
+  "alt_text": "Werbebild Ferntaxi Tübingen: „Einsteigen. Ankommen.“ mit Strecken Tübingen–München, Tübingen–Frankfurt, Tübingen–Berlin.",
+  "instagram_id": "18379431571210773",
+  "story_id": "18114808808137553",
+  "facebook_id": "265217663586904_1767495551895867",
+  "linkedin_id": "urn:li:share:7526692035496509440",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7526692035496509440/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-12T18:06+01:00",
+  "linkedin_comment_error_reported": true
 }
