@@ -47,12 +47,16 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-11-13 18:00 Fr | event-shuttle   | e03-sieben-gaeste
 2026-11-14 11:00 Sa | reel            | v-klasse-luxus-liner
 2026-11-15 18:00 So | chauffeurservice | c07-tuer-offen
+2026-11-16 12:30 Mo | krankenfahrten (extra) | g01-krankenfahrten-tuebingen
 2026-11-16 18:00 Mo | taxi-tuebingen  | bahnhof-abholung
-2026-11-17 18:00 Di | krankenfahrten  | s3-krankenfahrt-chemo-strahlentherapie
+2026-11-17 18:00 Di | krankenfahrten  | g02-chemo-strahlentherapie
 2026-11-17 19:00 Di | reel (ch)       | ch-e-klasse-allein (@xderchauffeurx)
+2026-11-18 12:30 Mi | krankenfahrten (extra) | g03-entlassfahrten
 2026-11-18 18:00 Mi | flughafen       | f03-puenktlichkeitsgarantie
+2026-11-19 12:30 Do | krankenfahrten (extra) | g04-kinder-jugendpsychiatrie
 2026-11-19 18:00 Do | ferntaxi        | t03-gruppe-7
 2026-11-19 19:00 Do | chauffeurservice (ch) | c13-messetag-stuttgart (@xderchauffeurx)
+2026-11-20 12:30 Fr | krankenfahrten (extra) | g05-genehmigung-check
 2026-11-20 18:00 Fr | medizinkurier   | m03-medikamente
 2026-11-22 18:00 So | chauffeurservice | c06-gelandet
 2026-11-23 18:00 Mo | taxi-tuebingen  | kindersitz
@@ -70,6 +74,7 @@ Geplante Posts (Themen-Tage: Mo Taxi Tübingen · Di Krankenfahrten · Mi Flugha
 2026-12-06 18:00 So | chauffeurservice | c05-arbeiten-sie
 2026-12-08 18:00 Di | krankenfahrten  | k05-derselbe-fahrer
 2026-12-09 18:00 Mi | flughafen       | crew-transfer
+2026-12-10 12:30 Do | krankenfahrten (extra) | s3-krankenfahrt-chemo-strahlentherapie (verschoben vom 17.11.)
 2026-12-10 18:00 Do | ferntaxi        | t07-familie-weit-weg
 2026-12-11 18:00 Fr | event-shuttle   | e07-14-gaeste-chat
 2026-12-13 18:00 So | chauffeurservice | c08-wagen-anlass
