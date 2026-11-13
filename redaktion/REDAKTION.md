@@ -15,10 +15,9 @@
 - Kein Motiv wiederholen, das in `queue/` oder `published/` schon vorkommt (Feld `motiv`, Überschrift).
 - Übersicht aller Termine: `redaktion/plan.txt` – nach jeder Änderung aktualisieren.
 
-## Krankenfahrten-Woche im Google-Stil (Vorgabe Yasin, 13.11.2026)
-- Yasin hat 5 eigene Krankenfahrt-Motive geliefert (Stil wie Google-Unternehmensprofil: 4:3, Petrol #114B4B, Inter, mit Telefonnummer). Ausnahme von Bildformat/Farben/„keine Telefonnummer“ – nur für diese Serie `g01…g05`.
+## Krankenfahrten-Serie g01–g05 (Vorgabe Yasin, 13.11.2026)
+- Inhalte aus Yasins eigenen Motiven, umgesetzt im festgelegten Hausstil (Archivo, Elfenbein/Schwarz/Gelb, 4:5). Vorlage: `vorlagen/g_build.py`. Stil bleibt immer der Hausstil, auch wenn Yasin Entwürfe in anderem Stil liefert.
 - Eingeplant 16.–20.11.2026: Di als Haupt-Post, Mo/Mi/Do/Fr zusätzlich um 12:30 in der Spur `extra`. Das ältere Chemo-Motiv `s3-krankenfahrt-chemo-strahlentherapie` ist auf 10.12.2026 12:30 (extra) verschoben.
-- Von Yasin über die Bilder bestätigt: Live-Tracking-Link für Eltern, Ziele Crona Kliniken/Medizinische Klinik/Frauenklinik/Hautklinik, Online-Genehmigungs-Check auf taxi-akbulut.de/krankenfahrten-tuebingen.
 
 ## LinkedIn-Unternehmensseite (seit 29.10.2026, Vorgabe Yasin)
 - Automatisch mitgespiegelt aus dem Haupt-Plan: nur Flughafen (`flughafen`), Event-Shuttle (`event-shuttle`), Ferntaxi (`ferntaxi`).

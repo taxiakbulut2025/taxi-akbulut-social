@@ -33,6 +33,9 @@ Stand: Oktober 2026.
 - Serienfahrten (Dialyse, Onkologie, Reha) mit fester Uhrzeit, möglichst derselbe Fahrer.
 - NICHT angeboten: Treppenhilfe/Tragestuhl, Liegendtransport, KTW.
 - Bei gesetzlich Krankenversicherten kann die gesetzliche Zuzahlung anfallen.
+- Ziele u. a. Crona Kliniken, Medizinische Klinik, Frauenklinik, Hautklinik (Chemo-/Strahlentherapie); Fahrten zur Kinder- und Jugendpsychiatrie Tübingen; Entlassfahrten ab der Klinik, Heimfahrt auch deutschlandweit (bestätigt Yasin, 13.11.2026).
+- Live-Tracking-Link für Eltern bei Fahrten von Kindern und Jugendlichen (bestätigt Yasin, 13.11.2026).
+- Online-Genehmigungs-Check auf taxi-akbulut.de/krankenfahrten-tuebingen: höchstens 5 Fragen, ohne Anmeldung, Ergebnis genehmigungsfrei / Antrag nötig / keine Übernahme; Grundlage § 60 SGB V und Krankentransport-Richtlinie (bestätigt Yasin, 13.11.2026).
 
 ## Weitere Leistungen
 - Ferntaxi / Langstrecke deutschlandweit.
