@@ -8,5 +8,12 @@
   "motiv": "e03-sieben-gaeste",
   "story": true,
   "story_image": "stories/2026-11-13-e03-sieben-gaeste.jpg",
-  "alt_text": "Gelbes Werbebild mit großer Zahl 7: „Gäste pro Fahrt“ in der Mercedes V-Klasse."
+  "alt_text": "Gelbes Werbebild mit großer Zahl 7: „Gäste pro Fahrt“ in der Mercedes V-Klasse.",
+  "ig_account": "chauffeur",
+  "instagram_id": "18091312052286023",
+  "story_id": "17895082194447733",
+  "linkedin_id": "urn:li:share:7527054415480963072",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7527054415480963072/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-13T18:06+01:00",
+  "linkedin_comment_error_reported": true
 }
