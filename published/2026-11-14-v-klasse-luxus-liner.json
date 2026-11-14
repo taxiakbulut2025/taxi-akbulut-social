@@ -12,5 +12,11 @@
   "yt_title": "Mercedes-Benz V-Klasse Luxus-Liner: 4 Sitze, viel Raum | Exklusiver Chauffeurservice Tübingen & Stuttgart",
   "youtube": true,
   "yt_topic": "chauffeurservice",
-  "linkedin": true
+  "linkedin": true,
+  "instagram_id": "18109738052212373",
+  "youtube_id": "SbWJsRsoy5w",
+  "linkedin_id": "urn:li:ugcPost:7527311300683743232",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3AugcPost%3A7527311300683743232/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-14T11:06+01:00",
+  "linkedin_comment_error_reported": true
 }
