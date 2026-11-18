@@ -8,5 +8,12 @@
   "motiv": "f03-puenktlichkeitsgarantie",
   "story": true,
   "story_image": "stories/2026-11-18-f03-puenktlichkeitsgarantie.jpg",
-  "alt_text": "Werbebild Taxi Akbulut: „Pünktlich. Mit Garantie.“"
+  "alt_text": "Werbebild Taxi Akbulut: „Pünktlich. Mit Garantie.“",
+  "instagram_id": "18093986888703376",
+  "story_id": "17981774244140725",
+  "facebook_id": "265217663586904_1775589747753114",
+  "linkedin_id": "urn:li:share:7528866394256379906",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7528866394256379906/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-18T18:06+01:00",
+  "linkedin_comment_error_reported": true
 }
