@@ -8,5 +8,9 @@
   "instagram": false,
   "facebook": false,
   "linkedin": true,
-  "motiv": "li-m18-inhaber-fahren"
+  "motiv": "li-m18-inhaber-fahren",
+  "linkedin_id": "urn:li:share:7528743880117305344",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7528743880117305344/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-18T10:00+01:00",
+  "linkedin_comment_error_reported": true
 }
