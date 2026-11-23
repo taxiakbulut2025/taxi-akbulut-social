@@ -10,5 +10,12 @@
   "linkedin": true,
   "story": true,
   "story_image": "stories/2026-11-23-neukunden-15-weiterhin.jpg",
-  "motiv": "neukunden-15-weiterhin"
+  "motiv": "neukunden-15-weiterhin",
+  "instagram_id": "17872084122662786",
+  "story_id": "18106713410033965",
+  "facebook_id": "265217663586904_1781192853859470",
+  "linkedin_id": "urn:li:share:7530522159090298880",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7530522159090298880/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-23T07:45+01:00",
+  "linkedin_comment_error_reported": true
 }
