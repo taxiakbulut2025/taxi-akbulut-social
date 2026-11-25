@@ -8,5 +8,9 @@
   "instagram": false,
   "facebook": false,
   "linkedin": true,
-  "motiv": "li-m21-gekuehlt-ab-praxistuer"
+  "motiv": "li-m21-gekuehlt-ab-praxistuer",
+  "linkedin_id": "urn:li:share:7531333784189804545",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7531333784189804545/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-25T13:31+01:00",
+  "linkedin_comment_error_reported": true
 }
