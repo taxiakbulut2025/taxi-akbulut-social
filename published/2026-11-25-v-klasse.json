@@ -8,5 +8,12 @@
   "motiv": "v-klasse",
   "story": true,
   "story_image": "stories/2026-11-25-v-klasse.jpg",
-  "alt_text": "Werbebild Großraumtaxi Tübingen: „Sieben Plätze. Sieben Koffer.“ Mercedes V-Klasse."
+  "alt_text": "Werbebild Großraumtaxi Tübingen: „Sieben Plätze. Sieben Koffer.“ Mercedes V-Klasse.",
+  "instagram_id": "18134512630607692",
+  "story_id": "18457863613122927",
+  "facebook_id": "265217663586904_1784176300227792",
+  "linkedin_id": "urn:li:share:7531403034384330752",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3Ashare%3A7531403034384330752/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-25T18:06+01:00",
+  "linkedin_comment_error_reported": true
 }
