@@ -12,5 +12,11 @@
   "yt_title": "Seit 1986 in Tübingen: Exklusiver Chauffeurservice im Mercedes-Benz V-Klasse Luxus-Liner",
   "youtube": true,
   "yt_topic": "chauffeurservice",
-  "linkedin": true
+  "linkedin": true,
+  "instagram_id": "18139873990805986",
+  "youtube_id": "KsmhJE6-8w8",
+  "linkedin_id": "urn:li:ugcPost:7532384494868434944",
+  "linkedin_comment_error": "LinkedIn socialActions/urn%3Ali%3AugcPost%3A7532384494868434944/comments: 403 {\"status\":403,\"serviceErrorCode\":100,\"code\":\"ACCESS_DENIED\",\"message\":\"Not enough permissions to access: partnerApiSocialActions.CREATE.20260801\"}",
+  "published_at": "2026-11-28T11:06+01:00",
+  "linkedin_comment_error_reported": true
 }
